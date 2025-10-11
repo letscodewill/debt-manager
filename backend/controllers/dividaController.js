@@ -11,14 +11,19 @@ exports.criarNovaDivida = async (req, res) => {
   try {
     const novaDivida = await dividaService.salvarDivida(dadosDivida)
 
-    res.status(201).json({
-      mensagem: 'Dívida cadastrada com sucesso',
+    // Use 'return' para garantir que o fluxo de execução pare aqui
+    return res.status(201).json({
+      // ⬅️ Adicione o 'return' aqui
+      mensagem: 'Dívida cadastrada com sucesso!',
       dados: novaDivida
     })
   } catch (error) {
     console.error('Erro ao cadastrar dívida:', error.message)
-    res.status(500).json({
-      erro: 'Falha ao processar o cadastro',
+
+    // Use 'return' também no catch
+    return res.status(500).json({
+      // ⬅️ E aqui
+      erro: 'Falha interna ao processar o cadastro.',
       detalhes: error.message
     })
   }
@@ -31,7 +36,6 @@ exports.listarTodasDividas = async (req, res) => {
 
     res.status(200).json(dividas)
   } catch (error) {
-    console.error('Erro ao listar dívidas:', error.message)
     res.status(500).json({
       erro: 'Falha ao buscar a lista de dívidas',
       detalhes: error.message

@@ -6,7 +6,9 @@ exports.salvarDivida = async dados => {
     const novaDivida = await Divida.create(dados)
     return novaDivida
   } catch (error) {
-    throw new Error(`Falha ao salvar a dívida no DB`)
+    // MUITO IMPORTANTE: Garanta que o Service não está chamando NENHUM res.send/res.json.
+    // Apenas relance o erro para o Controller
+    throw new Error(`Falha ao salvar a dívida no DB: ${error.message}`)
   }
 }
 

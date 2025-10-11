@@ -1,36 +1,46 @@
-const { Sequelize, DataTypes } = require("sequelize")
+const { Sequelize, DataTypes } = require('sequelize')
 
 const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: 'financas.sqlite'
+  dialect: 'sqlite',
+  storage: 'financas.sqlite'
 })
 
-const Divida = sequelize.define('Divida',{
+const Divida = sequelize.define(
+  'Divida',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true // <--- ISSO É CRUCIAL!
+    },
+    // Seus campos existentes
     descricao: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false
     },
     valor: {
-        type: DataTypes.FLOAT,
-        allowNull: false
+      type: DataTypes.FLOAT,
+      allowNull: false
     },
     categoria: {
-        type: DataTypes.STRING,
-        defaultValue: 'Geral'
+      type: DataTypes.STRING,
+      defaultValue: 'Geral'
     }
-}, {
+  },
+  {
     timestamps: true
-})
+  }
+)
 
 async function syncDatabase() {
-    try {
-        await sequelize.sync();
-        console.log('====================================');
-        console.log('Tabela Divida sincronizada.');
-        console.log('====================================');
-    } catch (error) {
-        console.error('Erro ao sincronizar tabela Divida.', error)
-    }
+  try {
+    await sequelize.sync()
+    console.log('====================================')
+    console.log('Tabela Divida sincronizada.')
+    console.log('====================================')
+  } catch (error) {
+    console.error('Erro ao sincronizar tabela Divida.', error)
+  }
 }
 
 syncDatabase()
