@@ -1,6 +1,21 @@
 const dividaService = require('../services/dividaService')
+const jwt = require('jsonwebtoken')
+const SECRET_KEY = 'my_secret_key'
 
-// === Controller para POST /cadastrar (Criar Dívida) ===
+exports.verifyToken =  (req, res, next) => {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+
+  if (!token) return res.status(403).json({ message: 'Token not provided' })
+
+  jwt.verify(token, SECRET_KEY, (err, decoded)=>{
+    if(err) return res.status(401).json({ message: 'Invalid token'})
+
+      req.userId = decoded.id;
+      next()
+  })
+}
+
 exports.criarNovaDivida = async (req, res) => {
   const dadosDivida = {
     descricao: req.body.descricao,
@@ -29,7 +44,6 @@ exports.criarNovaDivida = async (req, res) => {
   }
 }
 
-// === Controller para GET /dividas (Listar Dívidas) ===
 exports.listarTodasDividas = async (req, res) => {
   try {
     const dividas = await dividaService.buscarTodasDividas()
