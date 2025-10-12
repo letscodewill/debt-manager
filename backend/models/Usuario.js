@@ -1,4 +1,5 @@
-const { Sequelize, Datatypes } = require('sequelize')
+const { Sequelize, DataTypes } = require('sequelize')
+const bcrypt = require('bcryptjs')
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -9,20 +10,37 @@ const User = sequelize.define(
     'User',
     {
         id: {
-            type: Datatypes.INTEGER,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             autIncrement: true
         },
         username: {
-            type: Datatypes.STRING,
+            type: DataTypes.STRING,
             allowNull: false
         },
         password: {
-            type: Datatypes.STRING,
+            type: DataTypes.STRING,
             allowNull: false
         }
     }
 )
+
+// 🔒 Hash password before saving
+User.beforeCreate(async (user) => {
+  const salt = await bcrypt.genSalt(10)
+  user.password = await bcrypt.hash(user.password, salt)
+})
+
+User.beforeUpdate(async (user) => {
+  if (user.changed('password')) {
+    const salt = await bcrypt.genSalt(10)
+    user.password = await bcrypt.hash(user.password, salt)
+  }
+})
+
+User.prototype.validPassword = async function (password) {
+  return await bcrypt.compare(password, this.password)
+}
 
 async function syncUsersDatabase() {
     try {

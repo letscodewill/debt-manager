@@ -4,13 +4,23 @@ const Usuario = require('../models/Usuario')
 exports.cadastrarUsuario = async dados => {
     try {
         const novoUsuario = await Usuario.create(dados)
+        console.log('Usuário criado:',novoUsuario.username)
         return novoUsuario
     } catch (error) {
         throw new Error(`Falha ao salvar o novo usuário no DB: ${error.message}`)
     }
 }
 
-exports.buscarUsers = async () => {
+exports.buscarUsers = async (username) => {
+    try {
+        const Usuarios = await Usuario.findOne({where: {username}})
+        return Usuarios
+    } catch (error) {
+        throw new Error(`Falha ao buscar dívida: ${error.message}`)
+    }
+}
+
+exports.buscarAllUsers = async () => {
     try {
         const Usuarios = await Usuario.findAll()
         return Usuarios

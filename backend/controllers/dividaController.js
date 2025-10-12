@@ -1,6 +1,6 @@
 const dividaService = require('../services/dividaService')
-// const jwt = require('jsonwebtoken')
-// const SECRET_KEY = 'my_secret_key'
+const jwt = require('jsonwebtoken')
+const SECRET_KEY = process.env.SECRET_KEY;
 
 exports.verifyToken =  (req, res, next) => {
   const authHeader = req.headers['authorization']

@@ -24,7 +24,7 @@ exports.criarUsuario = async (req, res) => {
 
 exports.listarUsuarios = async (req,res) => {
     try {
-        const usuarios = await userService.buscarUsers()
+        const usuarios = await userService.buscarAllUsers()
         res.status(200).json(usuarios)
     } catch(error){
         res.status(500).json({

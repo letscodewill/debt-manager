@@ -1,3 +1,4 @@
+require('dotenv').config();
 const {
   listarTodasDividas,
   criarNovaDivida,
@@ -10,38 +11,48 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { criarUsuario, listarUsuarios, deteleUsuario } = require('./controllers/usersController')
-
+const userService = require('../backend/services/usersService')
 const app = express()
 const port = 3000
+const User = require('./models/Usuario')
+//criar rota de cadastro de usuário  - ok
+//criar banco de dados com os usuários- ok
+//criar autenticação jwt - ok
+//solicitar autenticação em todas as rotas - ok
 
-const users =[{id: 1, username: 'willian', password: bcrypt.hashSync('123456', 8)}]
-const SECRET_KEY = 'my_secret_key'
-
+const SECRET_KEY = process.env.SECRET_KEY;
 app.use(express.json())
 
 
 //criar rota de login
-app.post('/login', (req,res) => {
-  const { username, password } = req.body
-  const user = users.find(u => u.username === username)
+app.post('/login', async (req, res) => {
+try {
+    const { username, password } = req.body
+    const user = await User.findOne({ where: { username } })
 
-  if(!user) return res.status(401).json({ message: 'User not found'})
+    if (!user) return res.status(401).json({ message: 'User not found' })
 
-  const passwordIsValid = bcrypt.compareSync(password, user.password)
-  if (!passwordIsValid) return res.status(401).json({message: "Invalid password"})
+    const isValid = await user.validPassword(password)
+    if (!isValid) return res.status(401).json({ message: 'Invalid password' })
 
-  const token = jwt.sign({id: user.id }, SECRET_KEY, { expiresIn: "1h"})
-  res.json({ token })
+    const token = jwt.sign(
+      { id: user.id, username: user.username },
+      SECRET_KEY,
+      { expiresIn: '1h' }
+    )
+
+    res.json({ token })
+
+  } catch (error) {
+    console.error('Login error:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
 })
-//criar rota de cadastro de usuário
-//criar banco de dados com os usuários
-//criar autenticação jwt
-//solicitar autenticação em todas as rotas
-app.post('/cadastrarUsuario', criarUsuario)  
 
+app.post('/inserirUsuario', criarUsuario)
 app.use(verifyToken)
 
-app.post('/cadastrar', criarNovaDivida)  
+app.post('/cadastrar', criarNovaDivida)
 app.get('/', listarTodasDividas)
 app.put('/dividas/:id', updateDividas)
 app.delete('/dividas/:id', deleteDivida)
