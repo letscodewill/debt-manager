@@ -9,6 +9,7 @@ const {
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const { criarUsuario, listarUsuarios, deteleUsuario } = require('./controllers/usersController')
 
 const app = express()
 const port = 3000
@@ -36,6 +37,8 @@ app.post('/login', (req,res) => {
 //criar banco de dados com os usuários
 //criar autenticação jwt
 //solicitar autenticação em todas as rotas
+app.post('/cadastrarUsuario', criarUsuario)  
+
 app.use(verifyToken)
 
 app.post('/cadastrar', criarNovaDivida)  
@@ -43,5 +46,7 @@ app.get('/', listarTodasDividas)
 app.put('/dividas/:id', updateDividas)
 app.delete('/dividas/:id', deleteDivida)
 
+app.get('/usuarios', listarUsuarios)
+app.delete('/deletarUsuario/:id', deteleUsuario)
 
 app.listen(port, () => console.log('Ta up 🚀'))

@@ -1,6 +1,6 @@
 const dividaService = require('../services/dividaService')
-const jwt = require('jsonwebtoken')
-const SECRET_KEY = 'my_secret_key'
+// const jwt = require('jsonwebtoken')
+// const SECRET_KEY = 'my_secret_key'
 
 exports.verifyToken =  (req, res, next) => {
   const authHeader = req.headers['authorization']
@@ -25,7 +25,6 @@ exports.criarNovaDivida = async (req, res) => {
 
   try {
     const novaDivida = await dividaService.salvarDivida(dadosDivida)
-
     // Use 'return' para garantir que o fluxo de execução pare aqui
     return res.status(201).json({
       // ⬅️ Adicione o 'return' aqui
@@ -89,7 +88,7 @@ exports.deleteDivida = async (req, res) => {
       dados: divida
     })
   } catch (error) {
-    console.error('Erro ao listar dívidas:', error.message)
+    console.error('Erro ao deletar dívidas:', error.message)
     res.status(500).json({
       erro: 'Falha ao deletar a dívidas',
       detalhes: error.message
