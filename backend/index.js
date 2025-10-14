@@ -1,6 +1,7 @@
 require('dotenv').config();
 const {
   listarTodasDividas,
+  listarDividaId,
   criarNovaDivida,
   updateDividas,
   deleteDivida,
@@ -48,16 +49,20 @@ try {
     res.status(500).json({ message: 'Internal server error' })
   }
 })
-
+//Rotas de usuário
 app.post('/inserirUsuario', criarUsuario)
-app.use(verifyToken)
 
-app.post('/cadastrar', criarNovaDivida)
-app.get('/', listarTodasDividas)
-app.put('/dividas/:id', updateDividas)
-app.delete('/dividas/:id', deleteDivida)
+app.use(verifyToken)
 
 app.get('/usuarios', listarUsuarios)
 app.delete('/deletarUsuario/:id', deteleUsuario)
+
+//Rotas de divída
+app.post('/cadastrar', criarNovaDivida)
+app.get('/', listarTodasDividas)
+app.get('/:id', listarDividaId)
+app.put('/dividas/:id', updateDividas)
+app.delete('/dividas/:id', deleteDivida)
+
 
 app.listen(port, () => console.log('Ta up 🚀'))

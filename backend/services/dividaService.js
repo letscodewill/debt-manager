@@ -21,6 +21,15 @@ exports.buscarTodasDividas = async () => {
   }
 }
 
+exports.buscarDividaId = async (id) => {
+  try {
+    const dividas = await Divida.findOne(id)
+    return dividas
+  } catch (error) {
+    throw new Error(`Falha ao buscar dívidas: ${error.message}`)
+  }
+}
+
 exports.updateDividas = async (id, dados) => {
   try {
     const dividaAtualizada = Divida.update(

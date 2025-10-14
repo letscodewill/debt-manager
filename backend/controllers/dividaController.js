@@ -56,6 +56,20 @@ exports.listarTodasDividas = async (req, res) => {
   }
 }
 
+exports.listarTodasDividas = async (req, res) => {
+  const id = req.params.id
+  try {
+    const dividas = await dividaService.buscarDividaId(id)
+
+    res.status(200).json(dividas)
+  } catch (error) {
+    res.status(500).json({
+      erro: 'Falha ao buscar a lista de dívidas',
+      detalhes: error.message
+    })
+  }
+}
+
 exports.updateDividas = async (req, res) => {
   const id = req.params.id
   const dadosDivida = {
