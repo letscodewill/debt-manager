@@ -16,6 +16,7 @@
     "@mui/x-charts": "^8.14.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-router": "^7.9.4",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
