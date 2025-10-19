@@ -3,6 +3,8 @@ import { useContext, useState } from 'react'
 import './App.css'
 import { Context } from './contexts/Context'
 import Component from './Components/Component'
+import Login from './Components/Login'
+import ActionAreaCard from './Components/ActionAreaCard'
 
 function App() {
   const [signedIn, setSignedIn, user, setUser] = useContext(Context)
@@ -13,6 +15,9 @@ function App() {
       <Component />
       <button onClick={() => user.name == 'Willian'? setUser({ name: 'John' }):setUser({ name: 'Willian' })}>Change name</button>
       <button onClick={() => setSignedIn(!signedIn)}>Change Logged</button>
+      <Login />
+      <ActionAreaCard />
+      
     </>
   )
 }
