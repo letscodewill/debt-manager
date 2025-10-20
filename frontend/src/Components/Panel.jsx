@@ -1,6 +1,7 @@
 import ActionAreaCard from "./ActionAreaCard"
 import Grid from '@mui/material/Grid';
 import BasicCard from './BasicCard'
+import DropDown from './DropDown'
 
 
 export default function Panel() {
@@ -8,6 +9,7 @@ export default function Panel() {
         <Grid container spacing={2}>
             <Grid size={8}>
                 <BasicCard />
+                <DropDown />
             </Grid>
             <Grid size={4}>
                 <ActionAreaCard />
