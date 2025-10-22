@@ -2,6 +2,10 @@ import ActionAreaCard from "./ActionAreaCard"
 import Grid from '@mui/material/Grid';
 import BasicCard from './BasicCard'
 import DropDown from './DropDown'
+import Titles from "./Titles";
+import * as React from 'react';
+import DespesaGrid from "./DespesaGrid";
+
 
 
 export default function Panel() {
@@ -14,12 +18,10 @@ export default function Panel() {
             <Grid size={4}>
                 <ActionAreaCard />
             </Grid>
-            <Grid size={8}>
-                <BasicCard />
+            <Grid size={12}>
+                <Titles />
             </Grid>
-            <Grid size={4}>
-                <ActionAreaCard />
-            </Grid>
+           
         </Grid>
     </div>
 }
