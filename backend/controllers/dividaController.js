@@ -56,7 +56,7 @@ exports.listarTodasDividas = async (req, res) => {
   }
 }
 
-exports.listarTodasDividas = async (req, res) => {
+exports.listarDividaId = async (req, res) => {
   const id = req.params.id
   try {
     const dividas = await dividaService.buscarDividaId(id)
