@@ -7,6 +7,8 @@ import Grid from '@mui/material/Grid'
 import Checkboxes from './Checkbox'
 import DespesaGrid from './DespesaGrid'
 import * as React from 'react'
+import { useContext } from 'react'
+import { Context } from '../contexts/Context'
 
 const CardStyled = styled(CardContent)`
   display: flex;
@@ -18,15 +20,10 @@ const TextStyled = styled(Typography)`
   justify-content: center;
 `
 
-const despesas = [
-  { descricao: 'Internet bill', categoria: 'Utilities', valor: 120.50 },
-  { descricao: 'Supermarket', categoria: 'Groceries', valor: 342.90 },
-  { descricao: 'Gasoline', categoria: 'Transport', valor: 210.00 },
-  { descricao: 'Gym membership', categoria: 'Health', valor: 89.99 },
-  { descricao: 'Netflix subscription', categoria: 'Entertainment', valor: 39.90 }
-]
-
 export default function Titles(params) {
+
+  const { despesas } = useContext(Context)
+
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardStyled>

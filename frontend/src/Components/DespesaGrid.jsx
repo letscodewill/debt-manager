@@ -14,7 +14,6 @@ const TextStyled = styled(Typography)`
 `
 
 export default function DespesaGrid({ descricao, categoria, valor }) {
-  // ✅ Hooks must be inside the component
   const [checked, setChecked] = React.useState(false)
 
   const handleChange = (event) => {
