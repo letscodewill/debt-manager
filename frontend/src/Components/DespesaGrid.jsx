@@ -29,22 +29,22 @@ export default function DespesaGrid({ descricao, categoria, valor }) {
         </TextStyled>
       </Grid>
       <Grid size={4}>
-        <TextStyled gutterBottom variant="h5" component="div">
+        <TextStyled gutterBottom variant="p" component="div">
           {descricao}
         </TextStyled>
       </Grid>
       <Grid size={3}>
-        <TextStyled gutterBottom variant="h5" component="div">
+        <TextStyled gutterBottom variant="p" component="div">
           {categoria}
         </TextStyled>
       </Grid>
       <Grid size={2}>
-        <TextStyled gutterBottom variant="h5" component="div">
+        <TextStyled gutterBottom variant="p" component="div">
           R${valor}
         </TextStyled>
       </Grid>
       <Grid size={2}>
-        <TextStyled gutterBottom variant="h5" component="div">
+        <TextStyled gutterBottom variant="p" component="div">
           <ButtonGroup variant="outlined" aria-label="Basic button group">
             <Button>
               <EditIcon fontSize="small" />

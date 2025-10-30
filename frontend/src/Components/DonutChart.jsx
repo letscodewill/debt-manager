@@ -15,16 +15,16 @@ const data = [
 ];
 
 const settings = {
-  margin: { right: 0 },
+  margin: { right: 10 },
   width: 200,
   height: 200,
-  hideLegend: false,
+  hideLegend: true,
 };
 
 export default function DonutChart() {
   return (
     <PieChart
-      series={[{ innerRadius: 0, outerRadius: 100, data, arcLabel: 'value' }]}
+      series={[{ innerRadius: 0, outerRadius: 70, data, arcLabel: 'value' }]}
       {...settings}
     />
   );
