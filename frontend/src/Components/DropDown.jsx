@@ -4,6 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import SelectLabel from './SelectLabels';
 import styled from 'styled-components'
+import SelectLabelsYear from './SelectLabelsYear';
 
 
 const DivCardContent = styled(CardContent)`
@@ -22,6 +23,7 @@ export default function DropDown() {
       <DivCardContent>
         <Typography gutterBottom variant="h5" component="div">DESPESAS </Typography>
         <SelectLabel />
+        <SelectLabelsYear />
         
       </DivCardContent>
     </DivCardConteiner>

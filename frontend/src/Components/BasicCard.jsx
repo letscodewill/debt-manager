@@ -3,15 +3,12 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
-
-
-
-export default function BasicCard() {
+export default function BasicCard({ total }) {
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">TOTAL </Typography>
-        <Typography gutterBottom variant="h3" component="div">R$ {1999.27} </Typography>
+        <Typography gutterBottom variant="h3" component="div">R$ {total} </Typography>
       </CardContent>
     </Card>
   );

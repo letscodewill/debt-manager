@@ -9,6 +9,9 @@ import DespesaGrid from './DespesaGrid'
 import * as React from 'react'
 import { useContext } from 'react'
 import { Context } from '../contexts/Context'
+import { filterByYear, filterByMonth } from '../utils/datesFilter'
+
+
 
 const CardStyled = styled(CardContent)`
   display: flex;
@@ -20,9 +23,11 @@ const TextStyled = styled(Typography)`
   justify-content: center;
 `
 
-export default function Titles(params) {
+export default function Titles() {
+  const { despesas, month, year } = useContext(Context);
 
-  const { despesas } = useContext(Context)
+  let despesasDoAno = filterByYear(despesas, year);
+  let despesasDoMes = filterByMonth(despesasDoAno, month);
 
   return (
     <Card sx={{ minWidth: 275 }}>
@@ -35,34 +40,22 @@ export default function Titles(params) {
         </Button>
       </CardStyled>
 
-      <Grid container spacing={5}>
-        <Grid size={1}>
-          <TextStyled gutterBottom variant="h5" component="div">
-            <Checkboxes />
-          </TextStyled>
-        </Grid>
-        <Grid size={4}>
-          <TextStyled gutterBottom variant="h5" component="div">
-            Descrição
-          </TextStyled>
-        </Grid>
-        <Grid size={3}>
-          <TextStyled gutterBottom variant="h5" component="div">
-            Categoria
-          </TextStyled>
-        </Grid>
-        <Grid size={2}>
-          <TextStyled gutterBottom variant="h5" component="div">
-            Valor
-          </TextStyled>
-        </Grid>
-        <Grid size={2}>
-          <TextStyled gutterBottom variant="h5" component="div">
-            Ações
-          </TextStyled>
-        </Grid>
-      </Grid>
-      {despesas.map((item, index) => (
+      {/* ✅ If year doesn't match any data */}
+      {despesasDoAno.length === 0 && (
+        <TextStyled variant="body1" sx={{ color: 'gray' }}>
+          Nenhuma despesa encontrada para este ano.
+        </TextStyled>
+      )}
+
+      {/* ✅ If month has no data inside this year */}
+      {despesasDoAno.length > 0 && despesasDoMes.length === 0 && (
+        <TextStyled variant="body1" sx={{ color: 'gray' }}>
+          Nenhuma despesa neste mês para {year}.
+        </TextStyled>
+      )}
+
+      {/* ✅ Show data if exists */}
+      {despesasDoMes.map((item, index) => (
         <DespesaGrid
           key={index}
           descricao={item.descricao}
@@ -71,5 +64,6 @@ export default function Titles(params) {
         />
       ))}
     </Card>
-  )
+  );
 }
+

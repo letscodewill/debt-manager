@@ -2,28 +2,17 @@ import { Context } from '../contexts/Context'
 import { useState } from 'react'
 import { despesas } from '../utils/data'
 import App from '../App'
+import { byCategory} from '../utils/datesFilter'
 
 export default function Provider() {
   const [signedIn, setSignedIn] = useState(false)
   const [user, setUser] = useState({ name: 'Willian' })
-
-  const totalByCategory = despesas.reduce((acc, item) => {
-    if (!acc[item.categoria]) {
-      acc[item.categoria] = {
-        label: item.categoria,
-        value: 0,
-        color: item.color
-      }
-    }
-    acc[item.categoria].value += item.valor
-    return acc
-  }, {})
-
-  const totalArray = Object.values(totalByCategory)
-
+  const totalArray = Object.values(byCategory(despesas))
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [year, setYear] = useState(new Date().getFullYear())
   return (
     <Context.Provider
-      value={{ signedIn, setSignedIn, user, setUser, despesas, totalArray }}
+      value={{ signedIn, setSignedIn, user, setUser, despesas, totalArray, month, setMonth, year, setYear }}
     >
       <App />
     </Context.Provider>
