@@ -8,7 +8,7 @@ export default function Provider() {
   const [signedIn, setSignedIn] = useState(false)
   const [user, setUser] = useState({ name: 'Willian' })
   const totalArray = Object.values(byCategory(despesas))
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear())
   return (
     <Context.Provider

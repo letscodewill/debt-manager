@@ -10,8 +10,7 @@ import * as React from 'react'
 import { useContext } from 'react'
 import { Context } from '../contexts/Context'
 import { filterByYear, filterByMonth } from '../utils/datesFilter'
-
-
+import TransitionsModal from './TransitionsModal'
 
 const CardStyled = styled(CardContent)`
   display: flex;
@@ -35,10 +34,36 @@ export default function Titles() {
         <TextStyled gutterBottom variant="h5" component="div">
           DESPESAS
         </TextStyled>
-        <Button variant="outlined">
-          <span>+</span>Adicionar dívida
-        </Button>
+        <TransitionsModal />
       </CardStyled>
+
+      <Grid container spacing={5}>
+        <Grid size={1}>
+          <TextStyled gutterBottom variant="h5" component="div">
+            <Checkboxes />
+          </TextStyled>
+        </Grid>
+        <Grid size={4}>
+          <TextStyled gutterBottom variant="h5" component="div">
+            Descrição
+          </TextStyled>
+        </Grid>
+        <Grid size={3}>
+          <TextStyled gutterBottom variant="h5" component="div">
+            Categoria
+          </TextStyled>
+        </Grid>
+        <Grid size={2}>
+          <TextStyled gutterBottom variant="h5" component="div">
+            Valor
+          </TextStyled>
+        </Grid>
+        <Grid size={2}>
+          <TextStyled gutterBottom variant="h5" component="div">
+            Ações
+          </TextStyled>
+        </Grid>
+      </Grid>
 
       {/* ✅ If year doesn't match any data */}
       {despesasDoAno.length === 0 && (

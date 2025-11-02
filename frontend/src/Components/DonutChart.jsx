@@ -1,37 +1,40 @@
 import * as React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { Context } from '../contexts/Context';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { filterByMonth, filterByYear } from '../utils/datesFilter';
 
 const settings = {
-  margin: { right: 10 },
+  margin: { right: 20 },
   width: 200,
   height: 200,
   hideLegend: false,
 };
 
 export default function DonutChart() {
-  const { totalArray } = useContext(Context);
-  const { year, month } = useContext(Context);
+  const { totalArray, month, year } = useContext(Context);
 
-  const filteredY = filterByYear(totalArray, year)
-  const filteredM = filterByMonth(filteredY, month)
+  // Memoize filters to avoid recalculating unnecessarily
+  const filteredData = useMemo(() => {
+    const filteredY = filterByYear(totalArray, year);
+    const filteredM = filterByMonth(filteredY, month);
+    return filteredM;
+  }, [totalArray, month, year]);
 
   return (
-< PieChart
-  series={[
-    {
-      innerRadius: 0,
-      outerRadius: 100,
-      data: totalArray,
-      arcLabel: (item) => `${item.value}`,
-    },
-  ]}
-  slotProps={{
-    legend: { hidden: true },
-  }}
-  {...settings}
-/>
+    <PieChart
+      series={[
+        {
+          innerRadius: 50,
+          outerRadius: 85,
+          data: filteredData, // 👈 use filtered data here
+          arcLabel: (item) => `${item.value}`,
+        },
+      ]}
+      slotProps={{
+        legend: { hidden: true },
+      }}
+      {...settings}
+    />
   );
 }

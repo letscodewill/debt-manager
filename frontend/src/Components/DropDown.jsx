@@ -21,7 +21,7 @@ export default function DropDown() {
   return (
     <DivCardConteiner sx={{ minWidth: 275 }}>
       <DivCardContent>
-        <Typography gutterBottom variant="h5" component="div">DESPESAS </Typography>
+        <Typography gutterBottom variant="h5" component="div">Selecione o mês desejado </Typography>
         <SelectLabel />
         <SelectLabelsYear />
         
