@@ -1,18 +1,17 @@
-import ActionAreaCard from './ActionAreaCard'
+import ActionAreaCard from '../Components/ActionAreaCard.jsx'
 import Grid from '@mui/material/Grid'
-import BasicCard from './BasicCard'
-import DropDown from './DropDown'
-import Titles from './Titles'
+import BasicCard from '../Components/BasicCard'
+import DropDown from '../Components/DropDown'
+import Titles from '../Components/Titles'
 import sumValues from '../utils/sumItems'
 import * as React from 'react'
 import { Context } from '../contexts/Context'
-import { filterByYear, filterByMonth } from '../utils/datesFilter'
-
+import { filterByYear, filterByMonth } from '../utils/datesFilter.js'
 
 export default function Panel() {
   const { despesas, month, year } = React.useContext(Context)
-  const filteredY = filterByYear(despesas, year);
-  const filteredM = filterByMonth(filteredY, month);
+  const filteredY = filterByYear(despesas, year)
+  const filteredM = filterByMonth(filteredY, month)
 
   const sum = sumValues(filteredM)
   return (

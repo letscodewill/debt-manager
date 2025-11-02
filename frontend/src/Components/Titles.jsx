@@ -9,7 +9,7 @@ import DespesaGrid from './DespesaGrid'
 import * as React from 'react'
 import { useContext } from 'react'
 import { Context } from '../contexts/Context'
-import { filterByYear, filterByMonth } from '../utils/datesFilter'
+import { filterByYear, filterByMonth } from '../utils/datesFilter.js'
 import TransitionsModal from './TransitionsModal'
 
 const CardStyled = styled(CardContent)`
@@ -23,10 +23,10 @@ const TextStyled = styled(Typography)`
 `
 
 export default function Titles() {
-  const { despesas, month, year } = useContext(Context);
+  const { despesas, month, year } = useContext(Context)
 
-  let despesasDoAno = filterByYear(despesas, year);
-  let despesasDoMes = filterByMonth(despesasDoAno, month);
+  let despesasDoAno = filterByYear(despesas, year)
+  let despesasDoMes = filterByMonth(despesasDoAno, month)
 
   return (
     <Card sx={{ minWidth: 275 }}>
@@ -89,6 +89,5 @@ export default function Titles() {
         />
       ))}
     </Card>
-  );
+  )
 }
-

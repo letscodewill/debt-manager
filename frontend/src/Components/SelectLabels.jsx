@@ -5,15 +5,15 @@ import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import { useContext } from 'react'
 import { Context } from '../contexts/Context'
-import { currentMonths } from '../utils/datesFilter'
+import { currentMonths } from '../utils/datesFilter.js'
 
 export default function SelectLabels() {
-  const { month, setMonth } = useContext(Context);
+  const { month, setMonth } = useContext(Context)
 
-  const handleChange = (event) => {
-    const newValue =  event.target.value
-    setMonth(newValue);
-   };
+  const handleChange = event => {
+    const newValue = event.target.value
+    setMonth(newValue)
+  }
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -40,6 +40,5 @@ export default function SelectLabels() {
         <MenuItem value={11}>DEZEMBRO</MenuItem>
       </Select>
     </FormControl>
-  );
+  )
 }
-
