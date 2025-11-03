@@ -3,6 +3,8 @@ import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { AuthContext } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router'
+import LogoImage from '../Components/LogoImage'
+
 
 const Container = styled.div`
   display: flex;
@@ -32,9 +34,11 @@ export default function Login(params) {
   return (
     <form onSubmit={handleSubmit}>
       <Container>
+
+        <LogoImage />
         <TextField
           id="standard-basic"
-          label="Username"
+          label="Usuário"
           variant="standard"
           type="email"
           placeholder="Digite o seu email"
@@ -43,7 +47,7 @@ export default function Login(params) {
         />
         <TextField
           id="standard-basic"
-          label="Password"
+          label="Senha"
           variant="standard"
           type="password"
           placeholder="Digite a sua senha"
@@ -52,12 +56,20 @@ export default function Login(params) {
         />
         <Button
           type="submit"
-          variant="text"
+          variant="contained"
           sx={{
-            marginTop: 3
+            marginTop: 3,
           }}
         >
           Entrar
+        </Button>
+        <Button
+          variant="text"
+          sx={{
+            marginTop: 1,
+          }}
+        >
+          Cadastrar
         </Button>
       </Container>
     </form>
