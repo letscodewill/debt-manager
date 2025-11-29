@@ -40,11 +40,11 @@ export default function Login(params) {
           id="standard-basic"
           label="Usuário"
           variant="standard"
-          type="email"
-          placeholder="Digite o seu email"
+          type="text"
+          placeholder="Digite o seu usuário"
           value={email}
           onChange={e => setEmail(e.target.value)}
-        />
+        /> 
         <TextField
           id="standard-basic"
           label="Senha"

@@ -7,7 +7,7 @@ const {
   deleteDivida,
   verifyToken
 } = require('./controllers/dividaController')
-
+const cors = require( 'cors');
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const { criarUsuario, listarUsuarios, deteleUsuario } = require('./controllers/usersController')
@@ -21,8 +21,8 @@ const User = require('./models/Usuario')
 
 const SECRET_KEY = process.env.SECRET_KEY;
 app.use(express.json())
-
-console.log("SECRET:", SECRET_KEY)
+app.use(cors())
+// console.log("SECRET:", SECRET_KEY)
 //criar rota de login
 app.post('/login', async (req, res) => {
 try {
