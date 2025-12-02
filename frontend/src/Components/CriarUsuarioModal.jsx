@@ -7,7 +7,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { TextField } from '@mui/material'
 import styled from 'styled-components'
-import SelectLabelsCategory from './SelectLabelsCategory'
+
 
 const style = {
   position: 'absolute',
@@ -28,19 +28,23 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  //height: 100vh; /* optional: full screen height */
   text-color: white;
   padding-top: 15%;
 `
 
-export default function TransitionsModal() {
+export default function CriarUsuarioModal() {
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleOpen}>
-        +
+      <Button variant="outlined" onClick={handleOpen} sx={{
+            marginTop: 1,
+            width: '300px'
+          }}>
+        Cadastrar
       </Button>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -59,12 +63,12 @@ export default function TransitionsModal() {
           <Box sx={style}>
             <Container >
               <Typography gutterBottom variant="h5" component="div">
-                Cadastro de dívida
+                Cadastro de usuário
               </Typography>
 
               <TextField
                 id="standard-basic"
-                label="Descrição"
+                label="Usuário"
                 variant="standard"
                 sx={{
                   width: '80%'
@@ -72,17 +76,25 @@ export default function TransitionsModal() {
               />
               <TextField
                 id="standard-basic"
-                label="Valor"
+                label="Senha"
+                type='password'
                 variant="standard"
                 sx={{
                   marginTop:1.5,
                   width: '80%'
                 }}
               />
-              <SelectLabelsCategory />
-                 <Typography gutterBottom variant="p" component="div">
-                Selecione a categoria 
-              </Typography>
+              <TextField
+                id="standard-basic"
+                label="Digite a senha novamente"
+                type='password'
+                variant="standard"
+                sx={{
+                  marginTop:1.5,
+                  width: '80%'
+                }}
+              />
+              
               <Button
                 variant="text"
                 sx={{

@@ -1,3 +1,4 @@
+// Provider.jsx
 import { Context } from '../contexts/Context'
 import { useState } from 'react'
 import { despesas } from '../utils/data'
@@ -12,13 +13,14 @@ export default function Provider() {
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear())
   const [ category, setCategory ] = useState("")
+  
   return (
     <AuthProvider>
-    <Context.Provider
-      value={{ signedIn, setSignedIn, user, setUser, despesas, totalArray, month, setMonth, year, setYear, category, setCategory }}
-    >
-      <App />
-    </Context.Provider>
+      <Context.Provider
+        value={{ signedIn, setSignedIn, user, setUser, despesas, totalArray, month, setMonth, year, setYear, category, setCategory }}
+      >
+        <App />
+      </Context.Provider>
     </AuthProvider>
   )
 }

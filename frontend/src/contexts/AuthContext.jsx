@@ -1,4 +1,4 @@
-// src/contexts/AuthContext.jsx
+// AuthContext.jsx
 import React, { createContext, useState } from 'react';
 
 export const AuthContext = createContext();
@@ -23,10 +23,10 @@ export function AuthProvider({ children }) {
       setToken(data.token);
       setUser(data.user);
       localStorage.setItem('token', data.token);
-      return true;
+      return { success: true, user: data.user };
     } catch (error) {
       console.error('Erro no login:', error);
-      return false;
+      return { success: false, error: error.message };
     }
   };
 

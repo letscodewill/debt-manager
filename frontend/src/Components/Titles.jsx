@@ -32,7 +32,7 @@ export default function Titles() {
     <Card sx={{ minWidth: 275 }}>
       <CardStyled>
         <TextStyled gutterBottom variant="h5" component="div">
-          DESPESAS
+          
         </TextStyled>
         <TransitionsModal />
       </CardStyled>
@@ -40,7 +40,7 @@ export default function Titles() {
       <Grid container spacing={5}>
         <Grid size={1}>
           <TextStyled gutterBottom variant="h5" component="div">
-            <Checkboxes />
+            
           </TextStyled>
         </Grid>
         <Grid size={4}>
@@ -60,7 +60,7 @@ export default function Titles() {
         </Grid>
         <Grid size={2}>
           <TextStyled gutterBottom variant="h5" component="div">
-            Ações
+            
           </TextStyled>
         </Grid>
       </Grid>

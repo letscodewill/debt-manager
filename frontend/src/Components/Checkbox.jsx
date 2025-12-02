@@ -5,7 +5,7 @@ export default function ControlledCheckbox({...props}) {
  
 
   return (
-    <Checkbox
+    <Checkbox sx={{marginTop: -2}}
       checked={props.checked}
       onChange={props.onChange}
       inputProps={{ 'aria-label': 'controlled' }}

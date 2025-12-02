@@ -16,9 +16,9 @@ const TextStyled = styled(Typography)`
 export default function DespesaGrid({ descricao, categoria, valor }) {
   const [checked, setChecked] = React.useState(false)
 
-  const handleChange = (event) => {
-      setChecked(event.target.checked)
-      console.log(event.target.checked)
+  const handleChange = event => {
+    setChecked(event.target.checked)
+    console.log(event.target.checked)
   }
 
   return (
@@ -45,14 +45,18 @@ export default function DespesaGrid({ descricao, categoria, valor }) {
       </Grid>
       <Grid size={2}>
         <TextStyled gutterBottom variant="p" component="div">
-          <ButtonGroup variant="outlined" aria-label="Basic button group">
-            <Button>
-              <EditIcon fontSize="small" />
-            </Button>
-            <Button>
-              <DeleteForeverIcon fontSize="small" />
-            </Button>
-          </ButtonGroup>
+          {checked ? (
+            <ButtonGroup sx={{marginTop: -2}} variant="outlined" aria-label="Basic button group">
+              <Button>
+                <EditIcon fontSize="small" />
+              </Button>
+              <Button>
+                <DeleteForeverIcon fontSize="small" />
+              </Button>
+            </ButtonGroup>
+          ) : (
+            ''
+          )}
         </TextStyled>
       </Grid>
     </Grid>
