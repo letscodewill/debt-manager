@@ -3,43 +3,89 @@ import MenuItem from '@mui/material/MenuItem'
 import FormHelperText from '@mui/material/FormHelperText'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
+import InputLabel from '@mui/material/InputLabel'
 import { useContext } from 'react'
 import { Context } from '../contexts/Context'
-import { currentMonths } from '../utils/datesFilter.js'
 
-export default function SelectLabelsCategory() {
-  const { category, setCategory } = useContext(Context)
+// Lista de categorias organizada
+const CATEGORIAS = [
+  { value: '', label: 'Selecione uma categoria' },
+  { value: 'utilidades', label: 'Utilidades' },
+  { value: 'mercado', label: 'Mercado' },
+  { value: 'saude', label: 'Saúde' },
+  { value: 'recorrente', label: 'Recorrente' },
+  { value: 'transporte', label: 'Transporte' },
+  { value: 'entretenimento', label: 'Entretenimento' },
+  { value: 'educacao', label: 'Educação' },
+  { value: 'poupanca', label: 'Poupança' },
+  { value: 'comer-fora', label: 'Comer fora' },
+  { value: 'compras', label: 'Compras' },
+  { value: 'assinaturas', label: 'Assinaturas' },
+  { value: 'pet', label: 'Pet' },
+  { value: 'inesperada', label: 'Inesperada' }
+]
 
-  const handleChange = event => {
+export default function SelectLabelsCategory({ 
+  value: propValue, 
+  onChange: propOnChange,
+  label = "",
+  required = false,
+  fullWidth = true 
+}) {
+  const context = useContext(Context)
+  
+  // Usa o valor da prop ou do contexto
+  const value = propValue !== undefined ? propValue : (context?.category || '')
+  
+  // Usa a função onChange da prop ou do contexto
+  const handleChange = (event) => {
     const newValue = event.target.value
-    setCategory(newValue)
+    
+    if (propOnChange) {
+      propOnChange(newValue) // Se passou por prop
+    } else if (context?.setCategory) {
+      context.setCategory(newValue) // Se está usando contexto
+    }
   }
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120, width: '80%', marginTop: 2.5 }}>
+    <FormControl 
+      variant="standard" 
+      sx={{ 
+        minWidth: 120, 
+        width: fullWidth ? '100%' : 'auto',
+        marginTop: 2.5
+      }}
+      required={required}
+    >
+      <InputLabel id="categoria-select-label">
+        {label}
+      </InputLabel>
+      
       <Select
-        value={category}
+        labelId="categoria-select-label"
+        value={value}
         onChange={handleChange}
-        displayEmpty
-        inputProps={{ 'aria-label': 'Without label' }}
+        label={label}
+        displayEmpty={!required}
+        fullWidth={fullWidth}
       >
-        <MenuItem value={currentMonths(new Date().getMonth())}>
-          <em>NENHUM</em>
-        </MenuItem>
-        <MenuItem value={'utilidades'}>Utilidades</MenuItem>
-        <MenuItem value={'mercado'}>Mercado</MenuItem>
-        <MenuItem value={'saude'}>Saúde</MenuItem>
-        <MenuItem value={'recorrente'}>Recorrente</MenuItem>
-        <MenuItem value={'transporte'}>Transporte</MenuItem>
-        <MenuItem value={'entretenimento'}>Entretenimento</MenuItem>
-        <MenuItem value={'educacao'}>Educação</MenuItem>
-        <MenuItem value={'poupanca'}>Poupança</MenuItem>
-        <MenuItem value={'comer-fora'}>Comer fora</MenuItem>
-        <MenuItem value={'compras'}>Compras</MenuItem>
-        <MenuItem value={'assinaturas'}>Assinaturas</MenuItem>
-        <MenuItem value={'pet'}>Pet</MenuItem>
-        <MenuItem value={'inesperada'}>Inesperada</MenuItem>
+        {CATEGORIAS.map((categoria) => (
+          <MenuItem 
+            key={categoria.value} 
+            value={categoria.value}
+            disabled={categoria.value === '' && required}
+          >
+            {categoria.label}
+          </MenuItem>
+        ))}
       </Select>
+      
+      {required && !value && (
+        <FormHelperText error>
+          Por favor, selecione uma categoria
+        </FormHelperText>
+      )}
     </FormControl>
   )
 }

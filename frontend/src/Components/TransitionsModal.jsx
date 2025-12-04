@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography'
 import { TextField } from '@mui/material'
 import styled from 'styled-components'
 import SelectLabelsCategory from './SelectLabelsCategory'
+import { useContext } from 'react'
+import { Context } from '../contexts/Context'
 
 const style = {
   position: 'absolute',
@@ -15,7 +17,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  height: "50%",
+  height: "auto",
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -29,13 +31,47 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   text-color: white;
-  padding-top: 15%;
 `
 
 export default function TransitionsModal() {
+  const { category, setCategory } = useContext(Context)
   const [open, setOpen] = React.useState(false)
+  const [descricao, setDescricao] = React.useState('')
+  const [valor, setValor] = React.useState('')
+  
   const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const handleClose = () => {
+    setOpen(false)
+    setDescricao('')
+    setValor('')
+    setCategory('')
+  }
+
+  const handleSubmit = () => {
+    // Validação básica
+    if (!descricao.trim() || !valor || !category) {
+      alert('Por favor, preencha todos os campos!')
+      return
+    }
+
+    const novaDivida = {
+      descricao: descricao.trim(),
+      valor: parseFloat(valor),
+      categoria: category,
+      data: new Date().toISOString()
+    }
+
+    console.log('Nova dívida:', novaDivida)
+    
+    // Aqui você pode fazer a requisição para a API
+    // fetch('http://localhost:3000/dividas', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(novaDivida)
+    // })
+    
+    handleClose()
+  }
 
   return (
     <div>
@@ -43,8 +79,6 @@ export default function TransitionsModal() {
         +
       </Button>
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
         open={open}
         onClose={handleClose}
         closeAfterTransition
@@ -57,47 +91,53 @@ export default function TransitionsModal() {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Container >
-              <Typography gutterBottom variant="h5" component="div">
+            <Container>
+              <Typography gutterBottom variant="h5" component="div" sx={{ mb: 3 }}>
                 Cadastro de dívida
               </Typography>
 
               <TextField
-                id="standard-basic"
                 label="Descrição"
                 variant="standard"
-                sx={{
-                  width: '80%'
-                }}
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
+                fullWidth
+                sx={{ mb: 2 }}
+                required
               />
+              
               <TextField
-                id="standard-basic"
                 label="Valor"
                 variant="standard"
-                sx={{
-                  marginTop:1.5,
-                  width: '80%'
-                }}
+                value={valor}
+                onChange={(e) => setValor(e.target.value)}
+                type="number"
+                fullWidth
+                sx={{ mb: 3 }}
+                required
+                inputProps={{ step: "0.01" }}
               />
+              
               <SelectLabelsCategory />
-                 <Typography gutterBottom variant="p" component="div">
-                Selecione a categoria 
-              </Typography>
+            
+              
               <Button
-                variant="text"
-                sx={{
-                  marginTop: 3
-                }}
+                variant="contained"
+                onClick={handleSubmit}
+                sx={{ mt: 2, mb: 1 }}
+                fullWidth
               >
                 Cadastrar
               </Button>
+              
               <Button
                 onClick={handleClose}
-                variant="text"
+                variant="outlined"
+                fullWidth
               >
                 Fechar
               </Button>
-            </Container>{' '}
+            </Container>
           </Box>
         </Fade>
       </Modal>
