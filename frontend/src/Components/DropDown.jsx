@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import SelectLabel from './SelectLabels';
 import styled from 'styled-components'
 import SelectLabelsYear from './SelectLabelsYear';
+import ResetMonthButton from './ResetMonthButton';
 
 
 const DivCardContent = styled(CardContent)`
@@ -24,7 +25,7 @@ export default function DropDown() {
         <Typography gutterBottom variant="h5" component="div">Selecione o mês desejado </Typography>
         <SelectLabel />
         <SelectLabelsYear />
-        
+        <ResetMonthButton />
       </DivCardContent>
     </DivCardConteiner>
   );

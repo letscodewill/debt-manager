@@ -1,43 +1,63 @@
 import * as React from 'react'
 import MenuItem from '@mui/material/MenuItem'
-import FormHelperText from '@mui/material/FormHelperText'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
-import { useContext } from 'react'
+import InputLabel from '@mui/material/InputLabel'
+import { useContext, useState, useEffect } from 'react'
 import { Context } from '../contexts/Context'
-import { currentMonths } from '../utils/datesFilter.js'
+
+const MESES = [
+  { valor: 1, label: 'JANEIRO' },
+  { valor: 2, label: 'FEVEREIRO' },
+  { valor: 3, label: 'MARÇO' },
+  { valor: 4, label: 'ABRIL' },
+  { valor: 5, label: 'MAIO' },
+  { valor: 6, label: 'JUNHO' },
+  { valor: 7, label: 'JULHO' },
+  { valor: 8, label: 'AGOSTO' },
+  { valor: 9, label: 'SETEMBRO' },
+  { valor: 10, label: 'OUTUBRO' },
+  { valor: 11, label: 'NOVEMBRO' },
+  { valor: 12, label: 'DEZEMBRO' }
+]
 
 export default function SelectLabels() {
   const { month, setMonth } = useContext(Context)
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1)
 
-  const handleChange = event => {
-    const newValue = event.target.value
+  // Sincroniza com o contexto
+  useEffect(() => {
+    if (month && month >= 1 && month <= 12) {
+      setSelectedMonth(month)
+    }
+  }, [month])
+
+  const handleChange = (event) => {
+    const newValue = parseInt(event.target.value, 10)
+    setSelectedMonth(newValue)
     setMonth(newValue)
+    console.log('Mês selecionado:', newValue)
   }
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }}>
+    <FormControl sx={{ m: 1, minWidth: 140 }}>
+      <InputLabel id="month-select-label">Selecione o Mês</InputLabel>
       <Select
-        value={month}
+        labelId="month-select-label"
+        value={selectedMonth}
         onChange={handleChange}
-        displayEmpty
-        inputProps={{ 'aria-label': 'Without label' }}
+        label="Selecione o Mês"
+        sx={{ minHeight: '40px' }}
       >
-        <MenuItem value={currentMonths(new Date().getMonth())}>
-          <em>NENHUM</em>
-        </MenuItem>
-        <MenuItem value={0}>JANEIRO</MenuItem>
-        <MenuItem value={1}>FEVEREIRO</MenuItem>
-        <MenuItem value={2}>MARÇO</MenuItem>
-        <MenuItem value={3}>ABRIL</MenuItem>
-        <MenuItem value={4}>MAIO</MenuItem>
-        <MenuItem value={5}>JUNHO</MenuItem>
-        <MenuItem value={6}>JULHO</MenuItem>
-        <MenuItem value={7}>AGOSTO</MenuItem>
-        <MenuItem value={8}>SETEMBRO</MenuItem>
-        <MenuItem value={9}>OUTUBRO</MenuItem>
-        <MenuItem value={10}>NOVEMBRO</MenuItem>
-        <MenuItem value={11}>DEZEMBRO</MenuItem>
+        {MESES.map((mes) => (
+          <MenuItem 
+            key={mes.valor} 
+            value={mes.valor}
+            selected={mes.valor === (new Date().getMonth() + 1)}
+          >
+            {mes.label} {mes.valor === (new Date().getMonth() + 1) ? '(Atual)' : ''}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   )

@@ -1,3 +1,4 @@
+// Panel.jsx
 import ActionAreaCard from '../Components/ActionAreaCard.jsx'
 import Grid from '@mui/material/Grid'
 import BasicCard from '../Components/BasicCard'
@@ -7,53 +8,86 @@ import sumValues from '../utils/sumItems'
 import * as React from 'react'
 import { Context } from '../contexts/Context'
 import { filterByYear, filterByMonth } from '../utils/datesFilter.js'
-import { Button, Box } from '@mui/material'
+import { Button, Box, CircularProgress, Alert } from '@mui/material'
 import { AuthContext } from '../contexts/AuthContext.jsx'
 
 export default function Panel() {
-  const { despesas, month, year } = React.useContext(Context)
+  const { despesas, month, year, loading, error, fetchDespesas } = React.useContext(Context)
+  const { token, logout } = React.useContext(AuthContext)
+  
+  // Busca dados ao carregar o componente
+  React.useEffect(() => {
+    if (token && fetchDespesas) {
+      fetchDespesas(token)
+    }
+  }, [token, fetchDespesas])
+
+  // Filtra os dados
   const filteredY = filterByYear(despesas, year)
   const filteredM = filterByMonth(filteredY, month)
   const sum = sumValues(filteredM)
-  const { logout } = React.useContext(AuthContext)
-  
+
+  if (loading) {
+    return (
+      <Box 
+        display="flex" 
+        justifyContent="center" 
+        alignItems="center" 
+        minHeight="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    )
+  }
+
+  if (error) {
+    return (
+      <Box p={3}>
+        <Alert severity="error">
+          Erro ao carregar despesas: {error}
+        </Alert>
+        <Button 
+          variant="outlined" 
+          onClick={() => fetchDespesas(token)}
+          sx={{ mt: 2 }}
+        >
+          Tentar novamente
+        </Button>
+      </Box>
+    )
+  }
+
   return (
-    <div>
+    <Box sx={{ p: 2 }}>
+      {/* Botão Sair */}
       <Box sx={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 10,
-        backgroundColor: 'white',
-        py: 1,
-        px: 2,
-        borderBottom: '1px solid #f0f0f0',
         display: 'flex',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        mb: 3
       }}>
         <Button 
-              variant="outlined" 
-              onClick={logout}
-              color="error" // Optional: makes it red like an exit button
-            >
-              Sair
-            </Button>
+          variant="outlined" 
+          onClick={logout}
+          color="error"
+          size="small"
+        >
+          Sair
+        </Button>
       </Box>
+
+      {/* Conteúdo principal */}
       <Grid container spacing={2}>
-        
-        {/* Main content */}
-        <Grid size={8}>
-          <BasicCard total={sum} />
+        <Grid size={12} >
+          <BasicCard />
           <DropDown />
         </Grid>
-        <Grid size={4}>
+        <Grid size={12} md={4}>
           <ActionAreaCard />
         </Grid>
         <Grid size={12}>
           <Titles />
         </Grid>
-        
-        
       </Grid>
-    </div>
+    </Box>
   )
 }

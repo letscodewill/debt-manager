@@ -1,11 +1,104 @@
-export function filterByMonth(array, month) {
-  const monthExpenses = array.filter(item => item.data.getMonth() === month)
-  return monthExpenses
+// utils/datesFilter.js
+
+/**
+ * Converte qualquer formato de data para objeto Date
+ */
+function parseDate(dateValue) {
+  if (!dateValue) return null;
+  
+  try {
+    // Se já for um objeto Date
+    if (dateValue instanceof Date) {
+      return dateValue;
+    }
+    
+    // Se for uma string
+    if (typeof dateValue === 'string') {
+      return new Date(dateValue);
+    }
+    
+    // Se for um timestamp
+    if (typeof dateValue === 'number') {
+      return new Date(dateValue);
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Erro ao parsear data:', dateValue, error);
+    return null;
+  }
 }
 
-export function filterByYear(array, year) {
-  const yearFiltered = array.filter(item => item.data.getFullYear() === year)
-  return yearFiltered
+// utils/datesFilter.js
+export function filterByMonth(despesas, month) {
+  if (!despesas || !Array.isArray(despesas)) return []
+  
+  console.log('filterByMonth - procurando mês:', month, 'tipo:', typeof month)
+  
+  return despesas.filter(despesa => {
+    try {
+      if (!despesa.data) return false
+      
+      const data = despesa.data instanceof Date 
+        ? despesa.data 
+        : new Date(despesa.data)
+      
+      if (isNaN(data.getTime())) return false
+      
+      // Mês no JavaScript é 0-11, então adicionamos 1
+      const mesDespesa = data.getMonth() + 1
+      
+      // Debug
+      if (mesDespesa === month) {
+        console.log('Encontrou despesa no mês', month, ':', despesa.descricao)
+      }
+      
+      return mesDespesa === month
+    } catch (error) {
+      console.warn('Erro ao filtrar despesa por mês:', despesa, error)
+      return false
+    }
+  })
+}
+
+export function filterByYear(despesas, year) {
+  if (!despesas || !Array.isArray(despesas)) return []
+  
+  console.log('filterByYear - procurando ano:', year, 'tipo:', typeof year)
+  
+  return despesas.filter(despesa => {
+    try {
+      if (!despesa.data) return false
+      
+      const data = despesa.data instanceof Date 
+        ? despesa.data 
+        : new Date(despesa.data)
+      
+      if (isNaN(data.getTime())) return false
+      
+      const anoDespesa = data.getFullYear()
+      return anoDespesa === year
+    } catch (error) {
+      console.warn('Erro ao filtrar despesa por ano:', despesa, error)
+      return false
+    }
+  })
+}
+
+// Adicione também esta função para debug
+export function getValidDates(despesas) {
+  if (!despesas || !Array.isArray(despesas)) return [];
+  
+  return despesas.map((despesa, index) => {
+    const data = parseDate(despesa.data);
+    return {
+      index,
+      descricao: despesa.descricao,
+      dataOriginal: despesa.data,
+      dataParsed: data,
+      isValid: data && !isNaN(data.getTime())
+    };
+  });
 }
 
 export function Sorted(arr) {

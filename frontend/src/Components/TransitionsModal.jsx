@@ -24,7 +24,7 @@ const style = {
   p: 4,
   borderRadius: 5,
   maxHeight: '80vh',
-  overflowY: 'auto',
+  overflowY: 'auto'
 }
 
 const Container = styled.div`
@@ -37,9 +37,10 @@ const Container = styled.div`
 `
 
 export default function TransitionsModal() {
-  const { category, setCategory } = useContext(Context)
-  const { token, logout } = useContext(AuthContext)
-  
+  const { category, setCategory, fetchDespesas, setDespesas } =
+    useContext(Context)
+  const { token, user, logout } = useContext(AuthContext)
+
   const [open, setOpen] = React.useState(false)
   const [descricao, setDescricao] = React.useState('')
   const [valor, setValor] = React.useState('')
@@ -62,7 +63,7 @@ export default function TransitionsModal() {
     }
     setOpen(true)
   }
-  
+
   const handleClose = () => {
     setOpen(false)
     setDescricao('')
@@ -106,40 +107,38 @@ export default function TransitionsModal() {
       return
     }
 
-    // Verifica se tem token
     if (!token) {
       setSnackbar({
         open: true,
         message: 'Sessão expirada. Faça login novamente.',
         severity: 'error'
       })
-      logout() // Faz logout se não tiver token
+      logout()
       handleClose()
       return
     }
 
-    const novaDivida = {
+    const novaDespesa = {
       descricao: descricao.trim(),
       valor: parseFloat(valor),
       categoria: categoriaFinal,
+      data: new Date().toISOString(),
+      usuarioId: user?.id // Se seu backend precisar do ID do usuário
     }
 
-    console.log('Nova dívida:', novaDivida)
-    
     setLoading(true)
 
     try {
       const response = await fetch('http://localhost:3000/cadastrar', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // Envia o token no header
+          Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(novaDivida)
+        body: JSON.stringify(novaDespesa)
       })
 
       if (response.status === 401) {
-        // Token inválido ou expirado
         setSnackbar({
           open: true,
           message: 'Sessão expirada. Faça login novamente.',
@@ -152,39 +151,41 @@ export default function TransitionsModal() {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.message || `Erro ${response.status}: ${response.statusText}`)
+        throw new Error(
+          errorData.message || `Erro ${response.status}: ${response.statusText}`
+        )
       }
 
       const data = await response.json()
-      
-      console.log('Resposta da API:', data)
-      
+
+      // ATUALIZAÇÃO IMPORTANTE: Busca os dados atualizados da API
+      await fetchDespesas(token)
+
       setSnackbar({
         open: true,
-        message: 'Dívida cadastrada com sucesso!',
+        message: 'Despesa cadastrada com sucesso!',
         severity: 'success'
       })
-      
-      // Limpa os campos após sucesso
+
+      // Limpa os campos
       setDescricao('')
       setValor('')
       setCategoria('')
       if (setCategory) setCategory('')
-      
-      // Fecha o modal após 2 segundos
+
+      // Fecha o modal após sucesso
       setTimeout(() => {
         handleClose()
-      }, 2000)
-      
+      }, 1500)
     } catch (error) {
-      console.error('Erro ao cadastrar dívida:', error)
-      
+      console.error('Erro ao cadastrar despesa:', error)
+
       setSnackbar({
         open: true,
         message: `Erro ao cadastrar: ${error.message}`,
         severity: 'error'
       })
-      
+
       setLoading(false)
     }
   }
@@ -194,7 +195,7 @@ export default function TransitionsModal() {
       <Button variant="outlined" onClick={handleOpen}>
         +
       </Button>
-      
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -217,29 +218,29 @@ export default function TransitionsModal() {
                 label="Descrição"
                 variant="standard"
                 value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
+                onChange={e => setDescricao(e.target.value)}
                 fullWidth
                 required
                 placeholder="Ex: Conta de luz, Supermercado, etc."
                 disabled={loading}
               />
-              
+
               <TextField
                 label="Valor (R$)"
                 variant="standard"
                 value={valor}
-                onChange={(e) => setValor(e.target.value)}
+                onChange={e => setValor(e.target.value)}
                 type="number"
                 fullWidth
                 required
-                inputProps={{ 
-                  step: "0.01",
-                  min: "0.01"
+                inputProps={{
+                  step: '0.01',
+                  min: '0.01'
                 }}
                 placeholder="0,00"
                 disabled={loading}
               />
-              
+
               <SelectLabelsCategory
                 value={categoria}
                 onChange={setCategoria}
@@ -247,24 +248,30 @@ export default function TransitionsModal() {
                 required={true}
                 disabled={loading}
               />
-              
-              <Box sx={{ 
-                display: 'flex', 
-                gap: 2, 
-                width: '100%',
-                mt: 2 
-              }}>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: 2,
+                  width: '100%',
+                  mt: 2
+                }}
+              >
                 <Button
                   variant="contained"
                   onClick={handleSubmit}
                   fullWidth
                   sx={{ py: 1 }}
                   disabled={loading}
-                  startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
+                  startIcon={
+                    loading ? (
+                      <CircularProgress size={20} color="inherit" />
+                    ) : null
+                  }
                 >
                   {loading ? 'Cadastrando...' : 'Cadastrar'}
                 </Button>
-                
+
                 <Button
                   onClick={handleClose}
                   variant="outlined"
@@ -275,11 +282,11 @@ export default function TransitionsModal() {
                   Cancelar
                 </Button>
               </Box>
-              
+
               {token && (
-                <Typography 
-                  variant="caption" 
-                  color="text.secondary" 
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
                   sx={{ mt: 1, fontSize: '0.7rem' }}
                 >
                   Autenticado com token: {token.substring(0, 10)}...
@@ -296,8 +303,8 @@ export default function TransitionsModal() {
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert 
-          onClose={handleSnackbarClose} 
+        <Alert
+          onClose={handleSnackbarClose}
           severity={snackbar.severity}
           variant="filled"
         >
