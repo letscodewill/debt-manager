@@ -7,18 +7,20 @@ import ButtonGroup from '@mui/material/ButtonGroup'
 import Button from '@mui/material/Button'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import TransitionsModalEdit from './TransitionsModalEdit'
+import TransitionsModalDelete from './TransitionsModalDelete'
 
 const TextStyled = styled(Typography)`
   text-align: center;
   justify-content: center;
 `
 
-export default function DespesaGrid({ descricao, categoria, valor }) {
+export default function DespesaGrid({ id, descricao, categoria, valor }) {
   const [checked, setChecked] = React.useState(false)
 
   const handleChange = event => {
     setChecked(event.target.checked)
-    console.log(event.target.checked)
+    console.log(event.target.checked, id)
   }
 
   return (
@@ -46,13 +48,20 @@ export default function DespesaGrid({ descricao, categoria, valor }) {
       <Grid size={2}>
         <TextStyled gutterBottom variant="p" component="div">
           {checked ? (
-            <ButtonGroup sx={{marginTop: -2}} variant="outlined" aria-label="Basic button group">
-              <Button>
-                <EditIcon fontSize="small" />
-              </Button>
-              <Button>
-                <DeleteForeverIcon fontSize="small" />
-              </Button>
+            <ButtonGroup
+              sx={{ marginTop: -2 }}
+              variant="outlined"
+              aria-label="Basic button group"
+            >
+              <TransitionsModalEdit
+                icon={<EditIcon fontSize="small" />}
+                divida={{ id, descricao, valor, categoria }}
+              />
+
+              <TransitionsModalDelete
+                icon={<DeleteForeverIcon fontSize="small" />}
+                divida={{ id, descricao, valor, categoria }}
+              />
             </ButtonGroup>
           ) : (
             ''

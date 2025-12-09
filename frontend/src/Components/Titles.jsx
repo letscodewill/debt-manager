@@ -81,13 +81,16 @@ export default function Titles() {
 
       {/* ✅ Show data if exists */}
       {despesasDoMes.map((item, index) => (
+        
         <DespesaGrid
           key={index}
+          id={item.id}
           descricao={item.descricao}
           categoria={item.categoria}
           valor={item.valor}
         />
       ))}
+      {despesasDoMes.map((item, index) => console.log(index, item.descricao, item.categoria, item.valor))}
     </Card>
   )
 }

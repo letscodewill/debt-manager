@@ -8,11 +8,11 @@ import sumValues from '../utils/sumItems'
 import * as React from 'react'
 import { Context } from '../contexts/Context'
 import { filterByYear, filterByMonth } from '../utils/datesFilter.js'
-import { Button, Box, CircularProgress, Alert } from '@mui/material'
+import { Button, Box, CircularProgress, Alert, Typography } from '@mui/material'
 import { AuthContext } from '../contexts/AuthContext.jsx'
 
 export default function Panel() {
-  const { despesas, month, year, loading, error, fetchDespesas } = React.useContext(Context)
+  const { user, despesas, month, year, loading, error, fetchDespesas } = React.useContext(Context)
   const { token, logout } = React.useContext(AuthContext)
   
   // Busca dados ao carregar o componente
@@ -65,6 +65,7 @@ export default function Panel() {
         justifyContent: 'flex-end',
         mb: 3
       }}>
+        
         <Button 
           variant="outlined" 
           onClick={logout}

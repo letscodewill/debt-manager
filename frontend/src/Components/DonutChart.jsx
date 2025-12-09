@@ -107,7 +107,7 @@ export default function DonutChart() {
     <PieChart
       series={[
         {
-          innerRadius: 50,
+          innerRadius: 25,
           outerRadius: 85,
           data: chartData,
           arcLabel: (item) => {
