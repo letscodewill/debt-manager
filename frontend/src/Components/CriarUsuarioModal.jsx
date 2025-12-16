@@ -7,7 +7,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { TextField } from '@mui/material'
 import styled from 'styled-components'
-
+import { useState } from 'react'
 
 const style = {
   position: 'absolute',
@@ -15,12 +15,12 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  height: "50%",
+  height: '50%',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-  borderRadius: 5,
+  borderRadius: 5
 }
 
 const Container = styled.div`
@@ -35,15 +35,71 @@ const Container = styled.div`
 
 export default function CriarUsuarioModal() {
   const [open, setOpen] = React.useState(false)
+  const [newUser, setNewUser] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
+  const handleData = () => {
+    console.log('Usuário:', newUser)
+    console.log('Senha:', password)
+    console.log('Confirmação:', confirmPassword)
+
+    // Aqui você pode adicionar validação e chamada à API
+    if (!newUser || !password || !confirmPassword) {
+      alert('Preencha todos os campos!')
+      return
+    }
+
+    if (password !== confirmPassword) {
+      alert('As senhas não coincidem!')
+      return
+    }
+
+    const dados = {
+    "username":newUser,
+    "password":password
+  }
+
+    // Chamada à API para criar usuário
+return fetch('http://localhost:3000/inserirUsuario', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(dados)
+})
+.then(response => {
+  if (!response.ok) {
+    return response.text().then(text => {
+      throw new Error(`Erro ${response.status}: ${response.statusText}. ${text}`)
+    })
+  }
+  return response.json()
+})
+.then(data => {
+  handleClose()
+  return data
+})
+.catch(err => {
+  console.error('Erro ao cadastrar usuário:', err)
+  throw err
+})
+
+     // Fecha o modal após sucesso
+  }
+
   return (
     <div>
-      <Button variant="outlined" onClick={handleOpen} sx={{
-            marginTop: 1,
-            width: '300px'
-          }}>
+      <Button
+        variant="outlined"
+        onClick={handleOpen}
+        sx={{
+          marginTop: 1,
+          width: '300px'
+        }}
+      >
         Cadastrar
       </Button>
       <Modal
@@ -61,7 +117,7 @@ export default function CriarUsuarioModal() {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Container >
+            <Container>
               <Typography gutterBottom variant="h5" component="div">
                 Cadastro de usuário
               </Typography>
@@ -70,6 +126,8 @@ export default function CriarUsuarioModal() {
                 id="standard-basic"
                 label="Usuário"
                 variant="standard"
+                value={newUser}
+                onChange={e => setNewUser(e.target.value)}
                 sx={{
                   width: '80%'
                 }}
@@ -77,36 +135,38 @@ export default function CriarUsuarioModal() {
               <TextField
                 id="standard-basic"
                 label="Senha"
-                type='password'
+                type="password"
                 variant="standard"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
                 sx={{
-                  marginTop:1.5,
+                  marginTop: 1.5,
                   width: '80%'
                 }}
               />
               <TextField
                 id="standard-basic"
                 label="Digite a senha novamente"
-                type='password'
+                type="password"
                 variant="standard"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
                 sx={{
-                  marginTop:1.5,
+                  marginTop: 1.5,
                   width: '80%'
                 }}
               />
-              
+
               <Button
                 variant="text"
+                onClick={handleData}
                 sx={{
                   marginTop: 3
                 }}
               >
                 Cadastrar
               </Button>
-              <Button
-                onClick={handleClose}
-                variant="text"
-              >
+              <Button onClick={handleClose} variant="text">
                 Fechar
               </Button>
             </Container>{' '}

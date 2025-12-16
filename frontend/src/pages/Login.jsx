@@ -1,10 +1,12 @@
-import { TextField, Button, CircularProgress } from '@mui/material'
+import { TextField, Button, CircularProgress, InputAdornment, IconButton  } from '@mui/material'
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { AuthContext } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router'
 import LogoImage from '../Components/LogoImage'
 import CriarUsuarioModal from '../Components/CriarUsuarioModal'
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const Container = styled.div`
   display: flex;
@@ -26,7 +28,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  
+  const [showPassword, setShowPassword] = useState(false)
   const { login } = useContext(AuthContext)
   const navigate = useNavigate()
 
@@ -71,8 +73,16 @@ export default function Login() {
           id="standard-basic"
           label="Senha"
           variant="standard"
-          type="password"
-          placeholder="Digite a sua senha"
+ type={showPassword ? 'text' : 'password'}          placeholder="Digite a sua senha"
+  InputProps={{
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>
+        ),
+      }}
           value={password}
           onChange={e => setPassword(e.target.value)}
           disabled={loading}
