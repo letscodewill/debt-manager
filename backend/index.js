@@ -10,7 +10,7 @@ const {
 const cors = require( 'cors');
 const express = require('express')
 const jwt = require('jsonwebtoken')
-const { criarUsuario, listarUsuarios, deteleUsuario } = require('./controllers/usersController')
+const { criarUsuario, listarUsuarios, deteleUsuario, updateUser } = require('./controllers/usersController')
 const app = express()
 const port = 3000
 const User = require('./models/Usuario')
@@ -54,6 +54,7 @@ app.use(verifyToken)
 
 app.get('/usuarios', listarUsuarios)
 app.delete('/deletarUsuario/:id', deteleUsuario)
+app.put('/usuarios/:id', updateUser)
 
 //Rotas de divída
 app.post('/cadastrar', criarNovaDivida)

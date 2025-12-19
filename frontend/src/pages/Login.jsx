@@ -1,12 +1,18 @@
-import { TextField, Button, CircularProgress, InputAdornment, IconButton  } from '@mui/material'
+import {
+  TextField,
+  Button,
+  CircularProgress,
+  InputAdornment,
+  IconButton
+} from '@mui/material'
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { AuthContext } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router'
 import LogoImage from '../Components/LogoImage'
 import CriarUsuarioModal from '../Components/CriarUsuarioModal'
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 const Container = styled.div`
   display: flex;
@@ -32,15 +38,14 @@ export default function Login() {
   const { login } = useContext(AuthContext)
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     setError('')
     setLoading(true)
 
     try {
-      // login agora retorna um objeto { success, user } ou { success, error }
       const result = await login(email, password)
-      
+
       if (result.success) {
         navigate('/dividas')
       } else {
@@ -68,30 +73,34 @@ export default function Login() {
           disabled={loading}
           fullWidth
           sx={{ mb: 2, width: '300px' }}
-        /> 
+        />
         <TextField
           id="standard-basic"
           label="Senha"
           variant="standard"
- type={showPassword ? 'text' : 'password'}          placeholder="Digite a sua senha"
-  InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
+          type={showPassword ? 'text' : 'password'}
+          placeholder="Digite a sua senha"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
           value={password}
           onChange={e => setPassword(e.target.value)}
           disabled={loading}
           fullWidth
           sx={{ mb: 3, width: '300px' }}
         />
-        
+
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        
+
         <Button
           type="submit"
           variant="contained"
@@ -103,8 +112,9 @@ export default function Login() {
         >
           {loading ? <CircularProgress size={24} color="inherit" /> : 'Entrar'}
         </Button>
-        
+
         <CriarUsuarioModal />
+        
       </Container>
     </form>
   )

@@ -10,6 +10,7 @@ export default function Provider() {
   const [signedIn, setSignedIn] = useState(false)
   const [user, setUser] = useState(null)
   const [despesas, setDespesas] = useState([])
+  const [usuarios, setUsuarios] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [month, setMonth] = useState(new Date().getMonth() + 1) // 1-12
@@ -72,6 +73,42 @@ const fetchDespesas = useCallback(async (token) => {
     }
   }, [despesas])
 
+  const fetchUsuarios = useCallback(async (token) => {
+  if (!token) return;
+  
+  try {
+    setLoading(true);
+    const response = await fetch('http://localhost:3000/usuarios/', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Token inválido ou expirado');
+      }
+      throw new Error('Erro ao buscar usuarios');
+    }
+
+    const data = await response.json();
+    
+    // Formata os dados da API
+    const usuariosFormatadas = data.map(formatDespesaFromAPI).filter(Boolean);
+    
+    setUsuarios(usuariosFormatadas);
+    setError(null);
+  } catch (err) {
+    console.error('Erro ao buscar usuarios:', err);
+    setError(err.message);
+    setUsuarios([]);
+  } finally {
+    setLoading(false);
+  }
+}, []);
+
   return (
     <AuthProvider>
       <AuthContext.Consumer>
@@ -85,6 +122,7 @@ const fetchDespesas = useCallback(async (token) => {
               despesas,
               setDespesas,
               fetchDespesas,
+              fetchUsuarios,
               loading,
               error,
               totalArray,

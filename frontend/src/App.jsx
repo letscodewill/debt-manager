@@ -4,6 +4,7 @@ import './App.css'
 import Login from './pages/Login'
 import Panel from './pages/Panel'
 import PrivateRoute from './Components/PrivateRoute'
+import Adm from './pages/Adm'
 
 function App() {
   return (
@@ -18,6 +19,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Panel />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/padmin"
+              element={
+                <PrivateRoute>
+                  <Adm />
                 </PrivateRoute>
               }
             />

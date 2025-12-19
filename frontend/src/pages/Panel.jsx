@@ -1,32 +1,37 @@
 // Panel.jsx
-import ActionAreaCard from '../Components/ActionAreaCard.jsx'
+import { useState, useEffect, useContext } from 'react'
+import { Navigate } from 'react-router-dom'
 import Grid from '@mui/material/Grid'
+import { Button, Box, CircularProgress, Alert } from '@mui/material'
+import ActionAreaCard from '../Components/ActionAreaCard.jsx'
 import BasicCard from '../Components/BasicCard'
 import DropDown from '../Components/DropDown'
 import Titles from '../Components/Titles'
 import sumValues from '../utils/sumItems'
-import * as React from 'react'
 import { Context } from '../contexts/Context'
-import { filterByYear, filterByMonth } from '../utils/datesFilter.js'
-import { Button, Box, CircularProgress, Alert, Typography } from '@mui/material'
 import { AuthContext } from '../contexts/AuthContext.jsx'
+import { filterByYear, filterByMonth } from '../utils/datesFilter.js'
 
 export default function Panel() {
-  const { user, despesas, month, year, loading, error, fetchDespesas } = React.useContext(Context)
-  const { token, logout } = React.useContext(AuthContext)
+  // 1. TODOS OS HOOKS PRIMEIRO (incluindo useState)
+  const [redirect, setRedirect] = useState(false)
   
-  // Busca dados ao carregar o componente
-  React.useEffect(() => {
+  const { user, despesas, month, year, loading, error, fetchDespesas } = useContext(Context)
+  const { token, logout } = useContext(AuthContext)
+  
+  // 2. DEPOIS os efeitos
+  useEffect(() => {
     if (token && fetchDespesas) {
       fetchDespesas(token)
     }
   }, [token, fetchDespesas])
 
-  // Filtra os dados
-  const filteredY = filterByYear(despesas, year)
-  const filteredM = filterByMonth(filteredY, month)
-  const sum = sumValues(filteredM)
+  // 3. Agora sim, condicionais de return
+  if (redirect) {
+    return <Navigate to="/padmin" />
+  }
 
+  // 4. Outras condicionais
   if (loading) {
     return (
       <Box 
@@ -57,6 +62,17 @@ export default function Panel() {
     )
   }
 
+  // 5. Lógica de negócio
+  const filteredY = filterByYear(despesas, year)
+  const filteredM = filterByMonth(filteredY, month)
+  const sum = sumValues(filteredM)
+
+  // 6. Função handler
+  const handleClick = () => {
+    setRedirect(true)
+  }
+
+  // 7. Retorno JSX
   return (
     <Box sx={{ p: 2 }}>
       {/* Botão Sair */}
@@ -66,7 +82,17 @@ export default function Panel() {
         mb: 3,
         mt: -5
       }}>
-        
+        <Button
+          type="button"
+          variant="text"
+          onClick={handleClick}
+          sx={{
+            marginRight: 1,
+            width: '130px'
+          }}
+        >
+          Painel admin
+        </Button>
         <Button 
           variant="outlined" 
           onClick={logout}
