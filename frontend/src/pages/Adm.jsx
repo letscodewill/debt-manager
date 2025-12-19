@@ -5,13 +5,15 @@ import UsersList from '../Components/Users'
 import { Box, CircularProgress, Alert, Button } from '@mui/material'
 import { useContext } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
-import RefreshIcon from '@material-ui/icons/Refresh';
+import RefreshIcon from '@material-ui/icons/Refresh'
+import CriarUsuarioModal from '../Components/CriarUsuarioModal'
+import { Navigate, useNavigate } from 'react-router'
 
 export default function Adm() {
   const [users, setUsers] = React.useState([])
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState(null)
-  
+  const navigate = useNavigate()
   const { token, logout } = useContext(AuthContext)
 
   // Função para buscar usuários
@@ -25,12 +27,12 @@ export default function Adm() {
     try {
       setLoading(true)
       setError(null)
-      
+
       const response = await fetch('http://localhost:3000/usuarios', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         }
       })
 
@@ -62,7 +64,12 @@ export default function Adm() {
   // Se estiver carregando
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
         <CircularProgress />
       </Box>
     )
@@ -87,22 +94,25 @@ export default function Adm() {
       {/* Cabeçalho */}
       <Grid container spacing={2} sx={{ mb: 4 }}>
         <Grid item xs={12}>
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            width: '100vh'
-          }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100vh'
+            }}
+          >
             <Typography variant="h4" component="h1" fontWeight="bold">
               Lista de Usuários
             </Typography>
-            <Button 
-              variant="outlined" 
-              onClick={logout}
+            <CriarUsuarioModal />
+            <Button
+              variant="outlined"
+              onClick={() => navigate('/dividas') }
               color="error"
-              sx={{ justifyContent: 'flex-end'}}
+              sx={{ justifyContent: 'flex-end', marginBottom: -1 }}
             >
-              Sair
+              Voltar
             </Button>
           </Box>
           <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
@@ -116,7 +126,7 @@ export default function Adm() {
         {users.length > 0 ? (
           users.map((user, index) => (
             <Grid item xs={12} key={user.id || user._id || index}>
-              <UsersList 
+              <UsersList
                 usuario={user}
                 onUserUpdated={fetchUsers} // Para atualizar após ações
               />
@@ -124,17 +134,15 @@ export default function Adm() {
           ))
         ) : (
           <Grid item xs={12}>
-            <Alert severity="info">
-              Nenhum usuário encontrado.
-            </Alert>
+            <Alert severity="info">Nenhum usuário encontrado.</Alert>
           </Grid>
         )}
       </Grid>
 
       {/* Botão para recarregar */}
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <Button 
-          variant="outlined" 
+        <Button
+          variant="outlined"
           onClick={fetchUsers}
           startIcon={<RefreshIcon />}
         >
