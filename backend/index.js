@@ -25,26 +25,71 @@ app.use(cors())
 // console.log("SECRET:", SECRET_KEY)
 //criar rota de login
 app.post('/login', async (req, res) => {
-try {
+  try {
     const { username, password } = req.body
-    const user = await User.findOne({ where: { username } })
+    
+    // Busca usuário incluindo campo activated
+    const user = await User.findOne({ 
+      where: { username },
+      attributes: ['id', 'username', 'password', 'activated', 'createdAt']
+    })
 
-    if (!user) return res.status(401).json({ message: 'User not found' })
+    if (!user) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'Usuário não encontrado' 
+      })
+    }
+
+    // Verifica se o usuário está ativo
+    if (user.activated === false) {
+      return res.status(403).json({
+        success: false,
+        message: 'Usuário desativado. Entre em contato com o administrador.'
+      })
+    }
 
     const isValid = await user.validPassword(password)
-    if (!isValid) return res.status(401).json({ message: 'Invalid password' })
+    if (!isValid) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'Senha incorreta' 
+      })
+    }
 
     const token = jwt.sign(
-      { id: user.id, username: user.username },
+      { 
+        id: user.id, 
+        username: user.username,
+        role: user.role || 'user'
+      },
       SECRET_KEY,
-      { expiresIn: '1h' }
+      { expiresIn: '24h' } // Aumentei para 24 horas
     )
 
-    res.json({ token })
+    // Remove a senha do objeto antes de retornar
+    const userResponse = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      name: user.name,
+      role: user.role || 'user',
+      activated: user.activated,
+      createdAt: user.createdAt
+    }
+
+    res.json({ 
+      success: true,
+      token,
+      user: userResponse
+    })
 
   } catch (error) {
     console.error('Login error:', error)
-    res.status(500).json({ message: 'Internal server error' })
+    res.status(500).json({ 
+      success: false,
+      message: 'Erro interno no servidor' 
+    })
   }
 })
 //Rotas de usuário

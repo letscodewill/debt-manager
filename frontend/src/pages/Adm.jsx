@@ -90,7 +90,8 @@ export default function Adm() {
           <Box sx={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
-            alignItems: 'center' 
+            alignItems: 'center',
+            width: '100vh'
           }}>
             <Typography variant="h4" component="h1" fontWeight="bold">
               Lista de Usuários
@@ -99,6 +100,7 @@ export default function Adm() {
               variant="outlined" 
               onClick={logout}
               color="error"
+              sx={{ justifyContent: 'flex-end'}}
             >
               Sair
             </Button>

@@ -16,8 +16,10 @@ export default function Panel() {
   // 1. TODOS OS HOOKS PRIMEIRO (incluindo useState)
   const [redirect, setRedirect] = useState(false)
   
-  const { user, despesas, month, year, loading, error, fetchDespesas } = useContext(Context)
-  const { token, logout } = useContext(AuthContext)
+  const {  despesas, month, year, loading, error, fetchDespesas } = useContext(Context)
+  const { user,token, logout } = useContext(AuthContext)
+
+  console.log('Usuário atual:', user); // Verifique aqui
   
   // 2. DEPOIS os efeitos
   useEffect(() => {
@@ -29,6 +31,23 @@ export default function Panel() {
   // 3. Agora sim, condicionais de return
   if (redirect) {
     return <Navigate to="/padmin" />
+  }
+
+  if (user.activated != true){
+    return (
+      <Box p={3}>
+        <Alert severity="error">
+          Usuário inativo, contato o administrador {error}
+        </Alert>
+        <Button 
+          variant="outlined" 
+          onClick={() => <Navigate to="/login" />}
+          sx={{ mt: 2 }}
+        >
+          Logar
+        </Button>
+      </Box>
+    )
   }
 
   // 4. Outras condicionais
@@ -82,7 +101,8 @@ export default function Panel() {
         mb: 3,
         mt: -5
       }}>
-        <Button
+        {
+          user.username != "adm" ? '' :<Button
           type="button"
           variant="text"
           onClick={handleClick}
@@ -93,6 +113,8 @@ export default function Panel() {
         >
           Painel admin
         </Button>
+        }
+        
         <Button 
           variant="outlined" 
           onClick={logout}
