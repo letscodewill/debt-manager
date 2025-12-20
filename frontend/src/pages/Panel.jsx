@@ -19,7 +19,7 @@ export default function Panel() {
   const {  despesas, month, year, loading, error, fetchDespesas } = useContext(Context)
   const { user,token, logout } = useContext(AuthContext)
 
-  console.log('Usuário atual:', user); // Verifique aqui
+  // console.log('Usuário atual:', user); // Verifique aqui
   
   // 2. DEPOIS os efeitos
   useEffect(() => {

@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "@material-ui/icons": "^4.11.3"
+    "@emotion/styled": "^11.14.1",
+    "@material-ui/icons": "^4.11.3",
+    "@mui/styled-engine-sc": "^7.3.6",
+    "@mui/x-date-pickers": "^8.22.1",
+    "date-fns": "^4.1.0",
+    "styled-components": "^6.1.19"
   }
 }

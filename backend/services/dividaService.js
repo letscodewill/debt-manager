@@ -36,7 +36,8 @@ exports.updateDividas = async (id, dados) => {
       {
         descricao: dados.descricao,
         valor: dados.valor,
-        categoria: dados.categoria
+        categoria: dados.categoria,
+        data: dados.data
       },
       {
         where: {

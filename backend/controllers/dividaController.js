@@ -20,7 +20,9 @@ exports.criarNovaDivida = async (req, res) => {
   const dadosDivida = {
     descricao: req.body.descricao,
     valor: req.body.valor,
-    categoria: req.body.categoria
+    categoria: req.body.categoria,
+    userId: req.body.userId,
+    data: req.body.data
   }
 
   try {
@@ -75,7 +77,9 @@ exports.updateDividas = async (req, res) => {
   const dadosDivida = {
     descricao: req.body.descricao,
     valor: req.body.valor,
-    categoria: req.body.categoria
+    categoria: req.body.categoria,
+    userId: req.body.userId,
+    data: req.body.data
   }
   try {
     const divida = await dividaService.updateDividas(id, dadosDivida)

@@ -26,6 +26,16 @@ const Divida = sequelize.define(
       type: DataTypes.STRING,
       defaultValue: 'Geral'
     }
+    ,
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
+    ,
+    data: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   },
   {
     timestamps: true

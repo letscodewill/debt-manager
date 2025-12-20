@@ -12,6 +12,7 @@ import { Context } from '../contexts/Context'
 import { filterByYear, filterByMonth } from '../utils/datesFilter.js'
 import TransitionsModal from './TransitionsModal'
 
+
 const CardStyled = styled(CardContent)`
   display: flex;
   justify-content: space-between;
@@ -24,6 +25,7 @@ const TextStyled = styled(Typography)`
 
 export default function Titles() {
   const { despesas, month, year } = useContext(Context)
+
 
   let despesasDoAno = filterByYear(despesas, year)
   let despesasDoMes = filterByMonth(despesasDoAno, month)
@@ -81,7 +83,6 @@ export default function Titles() {
 
       {/* ✅ Show data if exists */}
       {despesasDoMes.map((item, index) => (
-        
         <DespesaGrid
           key={index}
           id={item.id}
@@ -90,7 +91,7 @@ export default function Titles() {
           valor={item.valor}
         />
       ))}
-      {despesasDoMes.map((item, index) => console.log(index, item.descricao, item.categoria, item.valor))}
+      
     </Card>
   )
 }

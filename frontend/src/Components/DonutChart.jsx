@@ -79,7 +79,7 @@ export default function DonutChart() {
       color: CATEGORY_COLORS[item.categoria] || '#4A90E2'
     }))
 
-    console.log('DonutChart - Dados do gráfico:', pieData)
+    // console.log('DonutChart - Dados do gráfico:', pieData)
     
     return pieData
   }, [despesas, month, year])

@@ -11,6 +11,11 @@ import SelectLabelsCategory from './SelectLabelsCategory'
 import { useContext } from 'react'
 import { Context } from '../contexts/Context'
 import { AuthContext } from '../contexts/AuthContext'
+// Importações do DatePicker
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import ptBR from 'date-fns/locale/pt-BR'
 
 const style = {
   position: 'absolute',
@@ -40,11 +45,13 @@ export default function TransitionsModal() {
   const { category, setCategory, fetchDespesas, setDespesas } =
     useContext(Context)
   const { token, user, logout } = useContext(AuthContext)
+  console.log(user)
 
   const [open, setOpen] = React.useState(false)
   const [descricao, setDescricao] = React.useState('')
   const [valor, setValor] = React.useState('')
   const [categoria, setCategoria] = React.useState('')
+  const [dataDespesa, setDataDespesa] = React.useState(new Date()) // Novo estado para data
   const [loading, setLoading] = React.useState(false)
   const [snackbar, setSnackbar] = React.useState({
     open: false,
@@ -69,6 +76,7 @@ export default function TransitionsModal() {
     setDescricao('')
     setValor('')
     setCategoria('')
+    setDataDespesa(new Date()) // Reseta para data atual
     if (setCategory) setCategory('')
     setLoading(false)
   }
@@ -122,9 +130,11 @@ export default function TransitionsModal() {
       descricao: descricao.trim(),
       valor: parseFloat(valor),
       categoria: categoriaFinal,
-      data: new Date().toISOString(),
-      usuarioId: user?.id // Se seu backend precisar do ID do usuário
+      data: dataDespesa.toISOString(), // ⬅️ Usa a data selecionada no formato ISO
+      userId: user.id
     }
+
+    console.log('Enviando despesa:', novaDespesa); // Para debug
 
     setLoading(true)
 
@@ -171,6 +181,7 @@ export default function TransitionsModal() {
       setDescricao('')
       setValor('')
       setCategoria('')
+      setDataDespesa(new Date())
       if (setCategory) setCategory('')
 
       // Fecha o modal após sucesso
@@ -209,90 +220,113 @@ export default function TransitionsModal() {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Container>
-              <Typography variant="h5" component="h2" gutterBottom>
-                Cadastro de Dívida
-              </Typography>
-
-              <TextField
-                label="Descrição"
-                variant="standard"
-                value={descricao}
-                onChange={e => setDescricao(e.target.value)}
-                fullWidth
-                required
-                placeholder="Ex: Conta de luz, Supermercado, etc."
-                disabled={loading}
-              />
-
-              <TextField
-                label="Valor (R$)"
-                variant="standard"
-                value={valor}
-                onChange={e => setValor(e.target.value)}
-                type="number"
-                fullWidth
-                required
-                inputProps={{
-                  step: '0.01',
-                  min: '0.01'
-                }}
-                placeholder="0,00"
-                disabled={loading}
-              />
-
-              <SelectLabelsCategory
-                value={categoria}
-                onChange={setCategoria}
-                label="Categoria"
-                required={true}
-                disabled={loading}
-              />
-
-              <Box
-                sx={{
-                  display: 'flex',
-                  gap: 2,
-                  width: '100%',
-                  mt: 2
-                }}
-              >
-                <Button
-                  variant="contained"
-                  onClick={handleSubmit}
-                  fullWidth
-                  sx={{ py: 1 }}
-                  disabled={loading}
-                  startIcon={
-                    loading ? (
-                      <CircularProgress size={20} color="inherit" />
-                    ) : null
-                  }
-                >
-                  {loading ? 'Cadastrando...' : 'Cadastrar'}
-                </Button>
-
-                <Button
-                  onClick={handleClose}
-                  variant="outlined"
-                  fullWidth
-                  sx={{ py: 1 }}
-                  disabled={loading}
-                >
-                  Cancelar
-                </Button>
-              </Box>
-
-              {token && (
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  sx={{ mt: 1, fontSize: '0.7rem' }}
-                >
-                  Autenticado com token: {token.substring(0, 10)}...
+            {/* Envolva todo o conteúdo com LocalizationProvider */}
+            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
+              <Container>
+                <Typography variant="h5" component="h2" gutterBottom>
+                  Cadastro de Dívida
                 </Typography>
-              )}
-            </Container>
+
+                <TextField
+                  label="Descrição"
+                  variant="standard"
+                  value={descricao}
+                  onChange={e => setDescricao(e.target.value)}
+                  fullWidth
+                  required
+                  placeholder="Ex: Conta de luz, Supermercado, etc."
+                  disabled={loading}
+                />
+
+                <TextField
+                  label="Valor (R$)"
+                  variant="standard"
+                  value={valor}
+                  onChange={e => setValor(e.target.value)}
+                  type="number"
+                  fullWidth
+                  required
+                  inputProps={{
+                    step: '0.01',
+                    min: '0.01'
+                  }}
+                  placeholder="0,00"
+                  disabled={loading}
+                />
+
+                {/* DatePicker adicionado aqui */}
+                <Box sx={{ width: '100%', mt: 1 }}>
+                  <DatePicker
+                    label="Data da despesa"
+                    value={dataDespesa}
+                    onChange={(novaData) => setDataDespesa(novaData)}
+                    renderInput={(params) => (
+                      <TextField 
+                        {...params} 
+                        variant="standard"
+                        fullWidth
+                        required
+                        disabled={loading}
+                      />
+                    )}
+                    inputFormat="dd/MM/yyyy"
+                    disableFuture={false} // Permite datas futuras se necessário
+                  />
+                </Box>
+
+                <SelectLabelsCategory
+                  value={categoria}
+                  onChange={setCategoria}
+                  label="Categoria"
+                  required={true}
+                  disabled={loading}
+                />
+
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: 2,
+                    width: '100%',
+                    mt: 2
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    onClick={handleSubmit}
+                    fullWidth
+                    sx={{ py: 1 }}
+                    disabled={loading}
+                    startIcon={
+                      loading ? (
+                        <CircularProgress size={20} color="inherit" />
+                      ) : null
+                    }
+                  >
+                    {loading ? 'Cadastrando...' : 'Cadastrar'}
+                  </Button>
+
+                  <Button
+                    onClick={handleClose}
+                    variant="outlined"
+                    fullWidth
+                    sx={{ py: 1 }}
+                    disabled={loading}
+                  >
+                    Cancelar
+                  </Button>
+                </Box>
+
+                {token && (
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ mt: 1, fontSize: '0.7rem' }}
+                  >
+                    Autenticado com token: {token.substring(0, 10)}...
+                  </Typography>
+                )}
+              </Container>
+            </LocalizationProvider>
           </Box>
         </Fade>
       </Modal>

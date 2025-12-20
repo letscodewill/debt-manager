@@ -33,7 +33,7 @@ function parseDate(dateValue) {
 export function filterByMonth(despesas, month) {
   if (!despesas || !Array.isArray(despesas)) return []
   
-  console.log('filterByMonth - procurando mês:', month, 'tipo:', typeof month)
+  // console.log('filterByMonth - procurando mês:', month, 'tipo:', typeof month)
   
   return despesas.filter(despesa => {
     try {
@@ -49,9 +49,9 @@ export function filterByMonth(despesas, month) {
       const mesDespesa = data.getMonth() + 1
       
       // Debug
-      if (mesDespesa === month) {
-        console.log('Encontrou despesa no mês', month, ':', despesa.descricao)
-      }
+      // if (mesDespesa === month) {
+      //   console.log('Encontrou despesa no mês', month, ':', despesa.descricao)
+      // }
       
       return mesDespesa === month
     } catch (error) {
@@ -64,7 +64,7 @@ export function filterByMonth(despesas, month) {
 export function filterByYear(despesas, year) {
   if (!despesas || !Array.isArray(despesas)) return []
   
-  console.log('filterByYear - procurando ano:', year, 'tipo:', typeof year)
+  // console.log('filterByYear - procurando ano:', year, 'tipo:', typeof year)
   
   return despesas.filter(despesa => {
     try {
