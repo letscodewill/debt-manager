@@ -13,6 +13,7 @@ import LogoImage from '../Components/LogoImage'
 import CriarUsuarioModal from '../Components/CriarUsuarioModal'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import ForgotPasswordModal from '../Components/ForgotPasswordModal'
 
 const Container = styled.div`
   display: flex;
@@ -114,7 +115,7 @@ export default function Login() {
         </Button>
 
         <CriarUsuarioModal />
-        
+        <ForgotPasswordModal />
       </Container>
     </form>
   )

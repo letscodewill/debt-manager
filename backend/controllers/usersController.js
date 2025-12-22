@@ -3,7 +3,8 @@ const userService = require('../services/usersService')
 exports.criarUsuario = async (req, res) => {
     const dadosUsuario = {
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        email: req.body.email
     }
 
     try {

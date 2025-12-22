@@ -14,7 +14,8 @@ const jwt = require('jsonwebtoken')
 const { criarUsuario, listarUsuarios, deteleUsuario, updateUser } = require('./controllers/usersController')
 const app = express()
 const port = 3000
-const User = require('./models/Usuario')
+const User = require('./models/Usuario');
+const { esqueciSenha, resetarSenha } = require('./controllers/authController');
 //criar rota de cadastro de usuário  - ok
 //criar banco de dados com os usuários- ok
 //criar autenticação jwt - ok
@@ -95,6 +96,8 @@ app.post('/login', async (req, res) => {
 })
 //Rotas de usuário
 app.post('/inserirUsuario', criarUsuario)
+app.post('/forgot-password', esqueciSenha)
+app.post('/reset-password', resetarSenha)
 
 app.use(verifyToken)
 

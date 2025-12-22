@@ -22,10 +22,22 @@ const User = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false
         },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         activated: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
+        },
+        resetPasswordToken: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        resetPasswordExpires: {
+            type: DataTypes.DATE,
+            allowNull: true
         }
     }
 )

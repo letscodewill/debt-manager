@@ -36,6 +36,7 @@ const Container = styled.div`
 export default function CriarUsuarioModal() {
   const [open, setOpen] = React.useState(false)
   const [newUser, setNewUser] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const handleOpen = () => setOpen(true)
@@ -59,7 +60,8 @@ export default function CriarUsuarioModal() {
 
     const dados = {
     "username":newUser,
-    "password":password
+    "password":password,
+    "email":email
   }
 
     // Chamada à API para criar usuário
@@ -129,6 +131,19 @@ return fetch('http://localhost:3000/inserirUsuario', {
                 value={newUser}
                 onChange={e => setNewUser(e.target.value)}
                 sx={{
+                  marginTop: 1.5,
+                  width: '80%'
+                }}
+              />
+              <TextField
+                id="standard-basic"
+                label="Email"
+                type='email'
+                variant="standard"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                sx={{
+                  marginTop: 1.5,
                   width: '80%'
                 }}
               />
