@@ -23,12 +23,27 @@ exports.buscarTodasDividas = async () => {
 
 exports.buscarDividaId = async (id) => {
   try {
-    const dividas = await Divida.findOne(id)
+    const dividas = await Divida.findAll(id)
     return dividas
   } catch (error) {
     throw new Error(`Falha ao buscar dívidas: ${error.message}`)
   }
 }
+
+exports.buscarDividaPorUsuario = async (userId) => {
+  try {
+    // 3. Use the 'where' clause to filter by the UserId column
+    const dividas = await Divida.findAll({
+      where: {
+        UserId: userId // Ensure this matches your specific DB column name (e.g., userId, user_id, etc.)
+      }
+    });
+    
+    return dividas;
+  } catch (error) {
+    throw new Error(`Falha ao buscar dívidas: ${error.message}`);
+  }
+};
 
 exports.updateDividas = async (id, dados) => {
   try {

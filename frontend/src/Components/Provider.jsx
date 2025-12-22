@@ -19,12 +19,12 @@ const [year, setYear] = useState(new Date().getFullYear())
   const [totalArray, setTotalArray] = useState([])
 
   // Função para buscar despesas da API
-const fetchDespesas = useCallback(async (token) => {
+const fetchDespesas = useCallback(async (token, userId) => {
   if (!token) return;
   
   try {
     setLoading(true);
-    const response = await fetch('http://localhost:3000/', {
+    const response = await fetch(`http://localhost:3000/dividas/usuario/${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

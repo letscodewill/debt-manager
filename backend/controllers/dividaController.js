@@ -72,6 +72,26 @@ exports.listarDividaId = async (req, res) => {
   }
 }
 
+exports.listarDividaPorUsuario = async (req, res) => {
+  console.log("1. Controller reached"); // <--- DEBUG LOG 1
+  const { userId } = req.params; 
+  console.log("2. UserId received:", userId); // <--- DEBUG LOG 2
+
+  try {
+    // Check if service is loaded
+    if (!dividaService) console.log("ERROR: dividaService is undefined!");
+
+    const dividas = await dividaService.buscarDividaPorUsuario(userId);
+    res.status(200).json(dividas);
+  } catch (error) {
+    console.error("ERROR CAUGHT:", error); // <--- DEBUG LOG 3
+    res.status(500).json({
+      erro: 'Falha ao buscar a lista de dívidas do usuário',
+      detalhes: error.message
+    });
+  }
+};
+
 exports.updateDividas = async (req, res) => {
   const id = req.params.id
   const dadosDivida = {

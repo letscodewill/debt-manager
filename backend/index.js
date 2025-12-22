@@ -5,6 +5,7 @@ const {
   criarNovaDivida,
   updateDividas,
   deleteDivida,
+  listarDividaPorUsuario,
   verifyToken
 } = require('./controllers/dividaController')
 const cors = require( 'cors');
@@ -104,6 +105,7 @@ app.put('/usuarios/:id', updateUser)
 //Rotas de divída
 app.post('/cadastrar', criarNovaDivida)
 app.get('/', listarTodasDividas)
+app.get('/dividas/usuario/:userId', listarDividaPorUsuario);
 app.get('/:id', listarDividaId)
 app.put('/dividas/:id', updateDividas)
 app.delete('/dividas/:id', deleteDivida)

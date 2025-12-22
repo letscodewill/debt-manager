@@ -159,7 +159,7 @@ export default function TransitionsModalEdit({icon, divida}) {
       const data = await response.json()
 
       // ATUALIZAÇÃO IMPORTANTE: Busca os dados atualizados da API
-      await fetchDespesas(token)
+      await fetchDespesas(token, user.id)
 
       setSnackbar({
         open: true,

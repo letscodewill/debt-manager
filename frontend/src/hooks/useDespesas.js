@@ -1,4 +1,3 @@
-// hooks/useDespesas.js
 import { useContext, useEffect } from 'react'
 import { Context } from '../contexts/Context'
 import { AuthContext } from '../contexts/AuthContext'
@@ -7,13 +6,15 @@ import sumValues from '../utils/sumItems'
 
 export function useDespesas() {
   const { despesas, month, year, loading, error, fetchDespesas } = useContext(Context)
-  const { token } = useContext(AuthContext)
+  // 1. Get 'user' from AuthContext
+  const { token, user } = useContext(AuthContext)
 
   useEffect(() => {
-    if (token && fetchDespesas) {
-      fetchDespesas(token)
+    // 2. Check for user and pass user.id
+    if (token && fetchDespesas && user) {
+      fetchDespesas(token, user.id)
     }
-  }, [token, fetchDespesas])
+  }, [token, fetchDespesas, user]) // 3. Add user to dependencies
 
   const filteredY = filterByYear(despesas, year)
   const filteredM = filterByMonth(filteredY, month)
@@ -25,6 +26,7 @@ export function useDespesas() {
     total: sum,
     loading,
     error,
-    refresh: () => fetchDespesas(token)
+    // 4. Update the manual refresh function too
+    refresh: () => fetchDespesas(token, user?.id)
   }
 }

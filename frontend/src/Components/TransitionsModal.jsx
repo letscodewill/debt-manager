@@ -169,7 +169,7 @@ export default function TransitionsModal() {
       const data = await response.json()
 
       // ATUALIZAÇÃO IMPORTANTE: Busca os dados atualizados da API
-      await fetchDespesas(token)
+      await fetchDespesas(token, user.id)
 
       setSnackbar({
         open: true,

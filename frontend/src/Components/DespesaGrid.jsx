@@ -37,7 +37,7 @@ export default function DespesaGrid({ id, descricao, categoria, valor }) {
       </Grid>
       <Grid size={3}>
         <TextStyled gutterBottom variant="p" component="div">
-          {categoria}
+          {categoria.replace('-', ' ')}
         </TextStyled>
       </Grid>
       <Grid size={2}>

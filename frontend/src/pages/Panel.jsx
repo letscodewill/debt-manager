@@ -13,22 +13,25 @@ import { AuthContext } from '../contexts/AuthContext.jsx'
 import { filterByYear, filterByMonth } from '../utils/datesFilter.js'
 
 export default function Panel() {
-  // 1. TODOS OS HOOKS PRIMEIRO (incluindo useState)
   const [redirect, setRedirect] = useState(false)
   
-  const {  despesas, month, year, loading, error, fetchDespesas } = useContext(Context)
-  const { user,token, logout } = useContext(AuthContext)
-
-  // console.log('Usuário atual:', user); // Verifique aqui
+  const { despesas, month, year, loading, error, fetchDespesas } = useContext(Context)
+  const { user, token, logout } = useContext(AuthContext)
   
-  // 2. DEPOIS os efeitos
-  useEffect(() => {
-    if (token && fetchDespesas) {
-      fetchDespesas(token)
-    }
-  }, [token, fetchDespesas])
+  // 1. SAFEGUARD: Use user?.id just in case user is null for a split second
+  const userId = user?.id 
 
-  // 3. Agora sim, condicionais de return
+  console.log('Usuário atual:', user); 
+  
+  // 2. THIS IS THE FIX IN USEEFFECT
+  useEffect(() => {
+    // We check if we have token AND fetchDespesas AND userId
+    if (token && fetchDespesas && userId) {
+      // ⬇️ HERE IS THE CHANGE: Pass BOTH token AND userId
+      fetchDespesas(token, userId) 
+    }
+  }, [token, fetchDespesas, userId]) // ⬅️ Add userId to the dependency array
+
   if (redirect) {
     return <Navigate to="/padmin" />
   }
@@ -72,7 +75,7 @@ export default function Panel() {
         </Alert>
         <Button 
           variant="outlined" 
-          onClick={() => fetchDespesas(token)}
+          onClick={() => fetchDespesas(token, userId)}
           sx={{ mt: 2 }}
         >
           Tentar novamente
