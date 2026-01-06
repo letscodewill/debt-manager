@@ -129,12 +129,12 @@ export default function Panel() {
       </Box>
 
       {/* Conteúdo principal */}
-      <Grid container spacing={2}>
-        <Grid size={12} >
+      <Grid container spacing={2} sx={{minWidth: 800}}>
+        <Grid size={8} >
           <BasicCard />
           <DropDown />
         </Grid>
-        <Grid size={12} md={4}>
+        <Grid size={4} md={4}>
           <ActionAreaCard />
         </Grid>
         <Grid size={12}>

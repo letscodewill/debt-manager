@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import TransitionsModalEdit from './TransitionsModalEdit'
 import TransitionsModalDelete from './TransitionsModalDelete'
+import { useState, useEffect } from 'react'
 
 const TextStyled = styled(Typography)`
   text-align: center;
@@ -22,6 +23,22 @@ export default function DespesaGrid({ id, descricao, categoria, valor }) {
     setChecked(event.target.checked)
     console.log(event.target.checked, id)
   }
+
+  const [width, setWidth] = useState(window.innerWidth);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+  
+    // 1. Setup: Add the listener when component mounts
+    window.addEventListener('resize', handleResize);
+  
+    // 2. Cleanup: Remove the listener when component unmounts
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); 
 
   return (
     <Grid container spacing={5}>
@@ -49,7 +66,7 @@ export default function DespesaGrid({ id, descricao, categoria, valor }) {
         <TextStyled gutterBottom variant="p" component="div">
           {checked ? (
             <ButtonGroup
-              sx={{ marginTop: -2 }}
+              sx={{ marginTop: -2, marginLeft: -7, height: 30 }}
               variant="outlined"
               aria-label="Basic button group"
             >

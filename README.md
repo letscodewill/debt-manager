@@ -1,6 +1,6 @@
 # 💰 Gerenciador de Dívidas (Debt Manager)
 
-Este projeto é uma aplicação completa para gerenciamento pessoal e compartilhado de dívidas e gastos. O objetivo é fornecer uma ferramenta robusta e intuitiva, com uma API segura e uma interface moderna para o controle financeiro.
+Este projeto é uma aplicação completa para gerenciamento pessoal de dívidas e gastos. O objetivo é fornecer uma ferramenta robusta e intuitiva, com uma API segura e uma interface moderna para o controle financeiro.
 
 ## ✨ Tecnologias Utilizadas
 
@@ -58,11 +58,11 @@ _Instruções detalhadas sobre como clonar o repositório, instalar as dependên
 
 ```bash
 # 1. Configurar o Backend
-cd api
+cd backend
 npm install
-npm start
+npm npm run devStart
 
 # 2. Configurar o Frontend
-cd ../interface
+cd frontend
 npm install
-npm start
+npm run dev

@@ -6,10 +6,10 @@ import { filterByMonth, filterByYear } from '../utils/datesFilter.js'
 import sumValues from '../utils/sumItems'
 
 const settings = {
-  margin: { right: 20 },
-  width: 200,
-  height: 200,
-  hideLegend: false
+  margin: { top: 30 },
+  width: 175,
+  height: 214,
+  hideLegend: true
 }
 
 // Cores para as categorias
@@ -88,8 +88,8 @@ export default function DonutChart() {
   if (chartData.length === 0) {
     return (
       <div style={{
-        width: 200,
-        height: 200,
+        width: 175,
+        height: 214,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
