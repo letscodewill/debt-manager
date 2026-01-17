@@ -25,8 +25,8 @@ export default function ActionAreaCard() {
     };
   }, []); 
   return (
-    <Card >
-      <CardActionArea>
+    <Card sx={{height: 285}}>
+      
         <DonutChart />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
@@ -36,7 +36,7 @@ export default function ActionAreaCard() {
             
           </Typography>
         </CardContent>
-      </CardActionArea>
+      
     </Card>
   );
 }
